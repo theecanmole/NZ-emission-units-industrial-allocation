@@ -74,7 +74,34 @@ Upload the csv file to Google Drive via the [Gdrive](https://github.com/prasmuss
 
 Follow steps in the R script file Sum-allocation-2010-2018.r
 
-![](annualallocations_720-540.svg)
+Create a bar chart in svg format
+
+```{r}
+svg(filename ="annualallocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4, 4, 4, 1)+0.1)
+barplot(annual/10^6,las=1, beside = TRUE, col=c("lightgray")) 
+title(cex.main=1.4,main="NZ Emission Units Allocated to Industry 2010 - 2018",ylab="million units")
+mtext(side=1,line=2.5,cex=0.8,expression(paste("Source: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+mtext(side=3,line=0,cex=0.9,expression(paste("Since 2010 emitting industries were given 38.9 million free emission units")))
+dev.off()
+```
+![](annualallocations_720-540.svg) 
+Create a line graph in svg format
+```{r}
+svg(filename ="annualallocationsline_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
+par(mar=c(3.1,4.1,1,1)+0.1)
+plot(annualallocations[["Year"]],annualallocations[["Allocation"]]/10^6,ylim=c(0,8),tck=0.01, axes=T,ann=T,las=1,pch=20, cex=0.75,type="o",col=2,lwd=2)
+axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1,las=1)
+grid()
+box()
+lines(annualallocations,col=2,lwd=2,lty=1)
+mtext(side=2,cex=1, line=-1.5,expression(paste("million units")))
+mtext(side=3,cex=1.3, line=-2,expression(paste("NZ Emission Units Allocated to Industry 2010 to 2018")))
+mtext(side=1,line=-2,cex=1,expression(paste("Data: EPA")))
+mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")
+dev.off()
+```
+![](annualallocationsline_720-540.svg)
 
 ### License
 

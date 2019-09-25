@@ -100,24 +100,6 @@ annualallocations
 7 2016    4307391
 8 2017    5606415
 9 2018    6743573
-# create plot in SVG format
-svg(filename ="annualallocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
-par(mar=c(3.1,3.1,1,1)+0.1)
-# ylim=c(0,7^6),
-plot(annualallocations[["Year"]],annualallocations[["Allocation"]],tck=0.01, axes=F,ann=F,las=1,pch=20, cex=0.75,type="o",col=2,lwd=2)
-#axis(side=2, tck=0.01, at = c(1^6,2^6,3^6,4^6,5^6,6^6,7^6), labels = c("1","2","3","4","5","6","7"), tick = T,lwd=1,lwd.tick=1)
-axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1,las=1)
-#axis(side=4, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=1,lwd.tick=1)
-grid()
-box()
-lines(annualallocations,col=2,lwd=2,lty=1)
-mtext(side=2,cex=1, line=-1.5,expression(paste("million units")))
-mtext(side=3,cex=1.5, line=-2,expression(paste("NZ Emission Units Allocated to Industry 2010 to 2018")))
-mtext(side=1,line=-2.8,cex=1,expression(paste("Data: EPA")))
-mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")
-#legend(1980, 400, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd=c(1,2), pch=c(20,NA),lty = 1, col = c("darkgray",2))
-dev.off()
-
 # create a numeric vector for a graph
 annual <- annualallocations[["Allocation"]] 
 
@@ -125,7 +107,35 @@ annual <- annualallocations[["Allocation"]]
 names(annual)<- annualallocations[["Year"]]
 str(annual)
 Named int [1:9] 1766456 3466694 3457468 4817947 4481067 4329248 4307391 5606415 6743573
- - attr(*, "names")= chr [1:9] "2010" "2011" "2012" "2013" ..
+ - attr(*, "names")= chr [1:9] "2010" "2011" "2012" "2013"..
+
+# create plot in SVG format
+#png("Emissionunits-2010-2018-560by420.png", bg="white", width=560, height=420,pointsize = 14)
+svg(filename ="annualallocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4, 4, 4, 1)+0.1)
+barplot(annual/10^6,las=1, beside = TRUE, col=c("lightgray")) 
+title(cex.main=1.4,main="NZ Emission Units Allocated to Industry 2010 - 2018",ylab="million units")
+mtext(side=1,line=2.5,cex=0.8,expression(paste("Source: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+mtext(side=3,line=0,cex=0.9,expression(paste("Since 2010 emitting industries were given 38.9 million free emission units")))
+dev.off()
+
+svg(filename ="annualallocationsline_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
+par(mar=c(3.1,3.1,1,1)+0.1)
+# ylim=c(0,7^6),
+plot(annualallocations[["Year"]],annualallocations[["Allocation"]]/10^6,ylim=c(0,8),tck=0.01, axes=T,ann=T,las=1,pch=20, cex=0.75,type="o",col=2,lwd=2)
+#axis(side=2, tck=0.01, at = c(1^6,2^6,3^6,4^6,5^6,6^6,7^6), labels = c("1","2","3","4","5","6","7"), tick = T,lwd=1,lwd.tick=1)
+axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=0,lwd.tick=1,las=1)
+#axis(side=4, tck=0.01, at = NULL, labels = NULL, tick = T,lwd=1,lwd.tick=1)
+grid()
+box()
+lines(annualallocations,col=2,lwd=2,lty=1)
+mtext(side=2,cex=1, line=-1.5,expression(paste("million units")))
+mtext(side=3,cex=1.3, line=-2,expression(paste("NZ Emission Units Allocated to Industry 2010 to 2018")))
+mtext(side=1,line=-2,cex=1,expression(paste("Data: EPA")))
+mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")
+dev.off()
+
+
 
 png("Emissionunits-2010-2018-560by420.png", bg="white", width=560, height=420,pointsize = 14)
 par(mar=c(4, 4, 4, 1)+0.1)
