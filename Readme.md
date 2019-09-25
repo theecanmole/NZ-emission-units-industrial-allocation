@@ -74,7 +74,7 @@ Upload the csv file to Google Drive via the [Gdrive](https://github.com/prasmuss
 
 Follow steps in the R script file Sum-allocation-2010-2018.r
 
-![](Emissionunits-2010-2018-560by420.png)
+![](annualallocations_720-540.svg)
 
 ### License
 
