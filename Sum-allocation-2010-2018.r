@@ -100,10 +100,30 @@ annualallocations
 7 2016    4307391
 8 2017    5606415
 9 2018    6743573
+# linear regression 
+linearregression <- lm(Allocation ~ Year, annualallocations)
+plot(annualallocations,type='b')
+lines(abline(linearregression))
+Call:
+lm(formula = Allocation ~ Year, data = annualallocations)
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-941264 -460427   44732  512937  946231 
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)   
+(Intercept) -920054286  174545511  -5.271  0.00116 **
+Year            458980      86666   5.296  0.00113 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 671300 on 7 degrees of freedom
+Multiple R-squared:  0.8003,	Adjusted R-squared:  0.7717 
+F-statistic: 28.05 on 1 and 7 DF,  p-value: 0.001128
+
 # create a numeric vector for a graph
 annual <- annualallocations[["Allocation"]] 
 
- # Add name attribute to numeric vector
+# Add name attribute to numeric vector
 names(annual)<- annualallocations[["Year"]]
 str(annual)
 Named int [1:9] 1766456 3466694 3457468 4817947 4481067 4329248 4307391 5606415 6743573
@@ -134,8 +154,6 @@ mtext(side=3,cex=1.3, line=-2,expression(paste("NZ Emission Units Allocated to I
 mtext(side=1,line=-2,cex=1,expression(paste("Data: EPA")))
 mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")
 dev.off()
-
-
 
 png("Emissionunits-2010-2018-560by420.png", bg="white", width=560, height=420,pointsize = 14)
 par(mar=c(4, 4, 4, 1)+0.1)
@@ -266,24 +284,32 @@ nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"
 955 2018    1324556
 
 # How many $$ value per year but just tell me year and value
-nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Value")]
-    Year    Value
-1   2010  3699201
-142 2011  8683591
-293 2012  1876750
-430 2013  2956894
-554 2014  3084427
-664 2015  4126250
-772 2016 11503657
-866 2017 17619981
-955 2018 28186552
+nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Allocation","Value")]
+
+nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Allocation","Value")]
+    Year Allocation    Value
+1   2010     210421  3699201
+142 2011     437681  8683591
+293 2012     301244  1876750
+430 2013    1524172  2956894
+554 2014     755987  3084427
+664 2015     772706  4126250
+772 2016     786306 11503657
+866 2017    1038914 17619981
+955 2018    1324556 28186552
+
+> sum(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Allocation")])
+[1] 7151987
+> sum(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Value")])
+[1] 81737303
 
 # How many units allocated to NZ Aluminium Smelters each year?
-nzasunits <- nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Allocation")]
+nzasunits <- nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Allocation","Value")]
 str(nzasunits)
-'data.frame':	9 obs. of  2 variables:
+'data.frame':	9 obs. of  3 variables:
  $ Year      : int  2010 2011 2012 2013 2014 2015 2016 2017 2018
  $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556
+ $ Value     : num  3699201 8683591 1876750 2956894 3084427  
  
 barplot(nzasunits[["Allocation"]]/10^6,las=1, beside = TRUE, col=c("#F0E442")) 
 title(cex.main=1.4,main="NZ Aluminium Smelter Ltd Emission Units Allocated 2010 - 2018",ylab="million units")
@@ -308,4 +334,52 @@ barplot(nzal20102018/10^6,las=1)
 title(cex.main=1.2,main="NZETS Units Allocated to NZ Aluminium Smelters Ltd 2010 2018",ylab="NZ Units (millions)")
 mtext(side=3,line=0.25,cex=0.8,expression(paste("NZAS Ltd were given 7 million free emission units")))
 mtext(side=1,line=2.5,cex=0.8,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+dev.off()
+
+-----------------------------
+# How many units were given to New Zealand Aluminium Smelter Limited each year?
+nzasunits <- nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Allocation","Value")]
+str(nzasunits)
+
+
+
+# How many units and value were given to New Zealand Aluminium Smelters Limited in total?
+sum(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Allocation")])
+[1] 7151987
+
+# What was the market value of the units given to New Zealand Aluminium Smelters Limited in total?
+sum(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Value")])
+[1] 81737303
+#  82 million dollars
+
+# What was the market value of the units given to New Zealand Steel Development Limited each year?
+nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year","Value")]
+
+# create a subset of NZ Steel allocations for charting 
+nzsmelterunits <-c(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Allocation")])
+nzsmeltervalue <-c(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Value")])
+str(nzsmelterunits)
+
+ # Add name attribute to numeric vector
+names(nzsmelterunits)<-c(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year")])  
+str(nzsmelterunits)
+ Named num [1:9] 8696896 19627791 6253238 1996943 4379835 ...
+ - attr(*, "names")= chr [1:9] "2010" "2011" "2012" "2013" ...  
+
+names(nzsmeltervalue)<-c(nzu2010to2018[(nzu2010to2018[["Name"]]=="New Zealand Aluminium Smelters Limited"),c("Year")])
+sum(nzsmeltervalue)
+[1] 81737303
+
+png("NZAS-Tiwai-units-2010-2018-560by420-v1.png", bg="white", width=560, height=420,pointsize = 14)
+par(mar=c(4, 4, 4, 1)+0.1)
+barplot(nzsmelterunits/10^6,las=1, beside = TRUE, col=c("#F0E442")) 
+title(cex.main=1.4,main="NZ Aluminium Smelters Ltd - the number of \nthe emission units allocated from to 2010 to 2018",ylab="million units")
+mtext(side=1,line=2.5,cex=0.8,expression(paste("Source: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+dev.off()
+
+png("NZASmelter-unit-value-2010-2018-560by420.png", bg="white", width=560, height=420,pointsize = 14)
+par(mar=c(4, 4, 4, 1)+0.1)
+barplot(nzsmeltervalue/10^6,las=1, beside = TRUE, col=c("#F0E442")) 
+title(cex.main=1.3,main="NZ Aluminium Smelters Ltd - the market value of \nthe emission units allocated from 2010 to 2018",ylab="$NZ million")
+mtext(sid=1,line=2.5,cex=0.8,expression(paste("Source: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()

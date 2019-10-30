@@ -86,7 +86,7 @@ mtext(side=3,line=0,cex=0.9,expression(paste("Since 2010 emitting industries wer
 dev.off()
 ```
 ![](annualallocations_720-540.svg) 
-Create a line graph in svg format
+Create a line graph of the total allocations by year in svg format
 ```{r}
 svg(filename ="annualallocationsline_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")    
 par(mar=c(3.1,4.1,1,1)+0.1)
@@ -102,6 +102,10 @@ mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emission
 dev.off()
 ```
 ![](annualallocationsline_720-540.svg)
+
+![](NZAS-Tiwai-units-2010-2018-560by420-v1.png)
+
+![](NZASmelter-unit-value-2010-2018-560by420.png) 
 
 ### License
 
