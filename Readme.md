@@ -14,75 +14,22 @@ This data repository provides a reproducible public domain data series of the In
 
 #### Requirements
 
-Data preparation was performed with the [OpenRefine progam](http://github.com/OpenRefine/OpenRefine/) and the [R programming language](https://www.r-project.org/about.html), R version 3.6.0 (2019-04-26) with the [RKWard 0.6.5 IDE](https://rkward.kde.org/) running on an i586-pc-linux-gnu (64-bit), [Debian GNU/Linux 9 (Stretch) MX-18](https://mxlinux.org/index.php) operating system.
+Data preparation was performed with [R version 3.6.0](https://cran.r-project.org/) with the [RKWard 0.6.5 IDE](https://rkward.kde.org/) running on an i586-pc-linux-gnu (64-bit), [Debian GNU/Linux 9 (Stretch) MX-18](https://mxlinux.org/index.php) operating system.
 
 #### Processing
 
-To obtain the data, create a new Google sheet. Insert the url of the EPA Industrial allocation decision webpage [https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/) into cell 'A1'. Insert the text '=importhtml(A1,"table",1)' into cell A2. And the full table of the 2018 year unit allocation data appears in the sheet. Repeat for years 2010 to 2017.
-
-Download the data in .csv format from Google sheets to the same folder as OpenRefine.
-
-open a terminal window and change to the OpenRefine directory
-
-type cd /home/user/Refine/openrefine-3.2/
-
-to start OpenRefine type './refine' and press enter
-
-wait for Firefox to start at IP http://127.0.0.1:3333/ which is OpenRefine. Or enter the url http://127.0.0.1:3333/ into your browser address bar
-
-Browse to and select a .csv data file
-
-Click on 'Next' button and 'create new project' 
- 
-Select and tick 'ignore first line at the beginning of the file 
-
-Tick 'Parse next 1 line as column headers'
-
-Click on 'create new project'
-
-We should have 108 rows of data - look the second column, it mixes two variables, 'Applicants name' and 'Activity'
-
-Edit column - Add new column 'Activity' based on column *Activity and Applicant's Name* - add name 'Activity'
-
-write " if(value.startsWith("*"), value[1,37],"")" into the Expression box. That moves only the activities into their own column. Select ok. there is now a column named 'Activity' and each cell contents ends with * as the leading * has been excluded.
-
-Edit column, Add column based on column Applicants Name called 'Name'
-
-in the Expression box , leave 'value' in box and copy the column by selecting 'ok'.
-
-Select Activity column, edit cells, fill down (fills all Activitys to empty cells)
-
-Edit column - Add new column 'Year' based on column *Activity and Applicant's Name* - add name 'Year' and value '2018' in expression box
-
-Select the header *2018 Final Unit Entitlement*, select Facet, numeric facet, go to left side of dashboard, untick 'numeric' box, leave 'blank' box (24 records) ticked,
-
-Select column 'All', then Edit rows, remove all matching rows (that leaves 84 rows with no blank cells in *2018 Final Unit Entitlement*), then tick boxes numeric and non-numeric. 
-
-Select column *Activity and Applicant's Name*, Edit column, Remove this column
-
-Select column *Activity", Edit column - Add new column 'Activity' based on column 'Activity2' - add name 'Activity' and expression in box enter value.replace("*","") - to remove the *
-
-Select column 'Final Entitlement' , add name 'Allocation' Edit column - Add new column and expression in box enter value.replace(",","") to remove commas, Edit column, remove column 'Final Entitlement'.
-
-Select the column Allocation, edit cells, common transforms, To number
-
-Click on the data project name at the top and just right of the "OpenRefine" label "NZ-emission-unit-industrial-allocation-decisions-EPA-2010-2018-Sheet1-csv". Chnage the name to "NZ emission unit industrial allocation decisions EPA 2018 tidy"  
-
-Select 'Export' (in top right corner) as .csv file
-
-Upload the csv file to Google Drive via the [Gdrive](https://github.com/prasmussen/gdrive") command line utility
 
 Follow steps in the R script file Sum-allocation-2010-2018.r
 
 Create a bar chart in svg format
 
 ```{r}
-svg(filename ="annualallocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
-par(mar=c(4, 4, 4, 1)+0.1)
-barplot(annual/10^6,las=1, beside = TRUE, col=c("lightgray")) 
-title(cex.main=1.4,main="NZ Emission Units Allocated to Industry 2010 - 2018",ylab="million units")
-mtext(side=1,line=2.5,cex=0.8,expression(paste("Source: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
-mtext(side=3,line=0,cex=0.9,expression(paste("Since 2010 emitting industries were given 38.9 million free emission units")))
+svg(filename ="NZAL-2010-2020-allocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
+barplot(nzalmatrix1/10^6,las=1) 
+title(cex.main=1.2,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
+mtext(side=3,line=0.25,cex=0.8,expression(paste("NZ Aluminium Smelters Ltd were given 10 million free emission units from 2010 to 2020")))
+mtext(side=1,line=2.5,cex=0.8,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```
 ![](annualallocations_720-540.svg) 
@@ -101,7 +48,9 @@ mtext(side=1,line=-2,cex=1,expression(paste("Data: EPA")))
 mtext(side=1,cex=0.7, line=-1.3,"https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")
 dev.off()
 ```
-![](annualallocationsline_720-540.svg)
+![NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd](NZAL-2010-2020-allocations_720-540.svg)
+
+![NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd](NZAL-2010-2020-560by420.png)
 
 ![](NZAS-Tiwai-units-2010-2018-560by420-v1.png)
 

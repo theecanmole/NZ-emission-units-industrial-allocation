@@ -1,0 +1,478 @@
+Sep 15, 2019, 18:03:22
+
+Github tutorial and commands
+
+http://kbroman.org/github_tutorial/pages/first_time.html
+
+user@mx3:~
+$ cd /home/user/R/eur/2010to2018
+user@mx3:~/R/eur/2010to2018
+$ ls -l
+total 224
+-rw-r--r-- 1 user user 48885 Sep 15 17:34 git-commands-history.txt
+-rw-r--r-- 1 user user 16204 Sep 15 16:22 Licence.txt
+-rw-r--r-- 1 user user  4938 Sep  4 15:56 NZ-emission-unit-industrial-allocation-decisions-EPA-2016-tidy.csv
+-rw-r--r-- 1 user user  4653 Aug 31 19:02 NZ-emission-unit-industrial-allocation-decisions-EPA-2017-tidy.csv
+-rw-r--r-- 1 user user  4454 Aug 26 17:01 NZ-emission-unit-industrial-allocation-decisions-EPA-2018-tidy.csv
+-rw-r--r-- 1 user user  8042 Mar  4  2018 NZETS-2010-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user  8571 Mar  4  2018 NZETS-2011-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user  7755 Mar  4  2018 NZETS-2012-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user  7001 Mar  4  2018 NZETS-2013-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user  6285 Mar  4  2018 NZETS-2014-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user  6307 Mar  4  2018 NZETS-2015-final-allocations-for-eligible-activities.csv
+-rw-r--r-- 1 user user 67208 Sep 15 16:12 nzu2010to2018.csv
+-rw-r--r-- 1 user user  6285 Sep 15 17:30 Readme.md
+-rw-r--r-- 1 user user  4739 Sep 15 17:26 Sum-allocation-2010-2018.r
+user@mx3:~/R/eur/2010to2018
+$ git status
+fatal: Not a git repository (or any of the parent directories): .git
+user@mx3:~/R/eur/2010to2018
+$ git init
+Initialized empty Git repository in /home/user/R/eur/2010to2018/.git/
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2010-final-allocations-for-eligible-activities.csv, NZETS-2011-final-allocations-for-eligible-activities.csv, NZETS-2012-final-allocations-for-eligible-activities.csv, NZETS-2013-final-allocations-for-eligible-activities.csv, NZETS-2014-final-allocations-for-eligible-activities.csv, NZETS-2015-final-allocations-for-eligible-activities.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2016-tidy.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2017-tidy.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2018-tidy.csv, nzu2010to2018.csv, Sum-allocation-2010-2018.r, Licence.txt
+fatal: pathspec 'NZETS-2010-final-allocations-for-eligible-activities.csv,' did not match any files
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2010-final-allocations-for-eligible-activities.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2011-final-allocations-for-eligible-activities.csv, NZETS-2012-final-allocations-for-eligible-activities.csv, NZETS-2013-final-allocations-for-eligible-activities.csv, NZETS-2014-final-allocations-for-eligible-activities.csv, NZETS-2015-final-allocations-for-eligible-activities.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2016-tidy.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2017-tidy.csv, NZ-emission-unit-industrial-allocation-decisions-EPA-2018-tidy.csv, nzu2010to2018.csv, Sum-allocation-2010-2018.r, Licence.txtfatal: pathspec 'NZETS-2011-final-allocations-for-eligible-activities.csv,' did not match any files
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2011-final-allocations-for-eligible-activities.csvuser@mx3:~/R/eur/2010to2018
+$ git add NZETS-2012-final-allocations-for-eligible-activities.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2013-final-allocations-for-eligible-activities.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2014-final-allocations-for-eligible-activities.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZETS-2015-final-allocations-for-eligible-activities.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZ-emission-unit-industrial-allocation-decisions-EPA-2016-tidy.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZ-emission-unit-industrial-allocation-decisions-EPA-2017-tidy.csv
+user@mx3:~/R/eur/2010to2018
+$ git add NZ-emission-unit-industrial-allocation-decisions-EPA-2018-tidy.csv
+user@mx3:~/R/eur/2010to2018
+$ git add nzu2010to2018.csv Sum-allocation-2010-2018.r Licence.txt
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md
+user@mx3:~/R/eur/2010to2018
+$ git commit
+[master (root-commit) fa24a15] First Commit
+ 13 files changed, 2441 insertions(+)
+ create mode 100644 Licence.txt
+ create mode 100644 NZ-emission-unit-industrial-allocation-decisions-EPA-2016-tidy.csv
+ create mode 100644 NZ-emission-unit-industrial-allocation-decisions-EPA-2017-tidy.csv
+ create mode 100644 NZ-emission-unit-industrial-allocation-decisions-EPA-2018-tidy.csv
+ create mode 100644 NZETS-2010-final-allocations-for-eligible-activities.csv
+ create mode 100644 NZETS-2011-final-allocations-for-eligible-activities.csv
+ create mode 100644 NZETS-2012-final-allocations-for-eligible-activities.csv
+ create mode 100644 NZETS-2013-final-allocations-for-eligible-activities.csv
+ create mode 100644 NZETS-2014-final-allocations-for-eligible-activities.csv
+ create mode 100644 NZETS-2015-final-allocations-for-eligible-activities.csv
+ create mode 100644 Readme.md
+ create mode 100644 Sum-allocation-2010-2018.r
+ create mode 100644 nzu2010to2018.csv
+user@mx3:~/R/eur/2010to2018
+$ git remote add origin https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole@gmail.com
+Password for 'https://theecanmole@gmail.com@github.com': Ut2CwL3fVe
+Counting objects: 15, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (15/15), done.
+Writing objects: 100% (15/15), 36.86 KiB | 0 bytes/s, done.
+Total 15 (delta 6), reused 0 (delta 0)
+remote: Resolving deltas: 100% (6/6), done.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+
+Sep 15, 2019, 18:03:22
+-------------------------------------------------------
+Sep 25, 2019, 15:10:01
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md sum-allocation-2010-2018.r
+fatal: pathspec 'sum-allocation-2010-2018.r' did not match any files
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md Sum-allocation-2010-2018.r
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 59b2d41] edit readme
+ 2 files changed, 240 insertions(+), 16 deletions(-)
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 4.27 KiB | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   fa24a15..59b2d41  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+---------------------------------------
+Sep 25, 2019, 20:54:39
+
+user@mx3:~
+$ Create a chart
+bash: Create: command not found
+user@mx3:~
+$ 
+user@mx3:~
+$ ```{r}
+> svg(filename ="Baringhead_co2_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
+> plot(plot(mlo[["Date"]],mlo[["CO2"]],ylim=c(325,415),tck=0.01, axes=F,ann=F,las=1,pch=20, cex=0.75,type="o",col="darkgray",lwd=1)
+> axis(side=1, tck=0.01, at = NULL, labels = NULL, tick = T, lwd=0, lwd.tick=1)
+> axis(side=2, tck=0.01, at = NULL, labels = NULL, tick = T,  lwd=0, lwd.tick=1, las=1)
+> grid()
+> box()
+> lines(bhd[["Date"]],bhd[["CO2"]],col=2,lwd=2,lty=1)
+> mtext(side=2,cex=1, line=-1.5,expression(paste("Carbon Dioxide parts per million")))
+> mtext(side=3,cex=1.5, line=-2,expression(paste("Atmospheric C", O[2], " Baring Head 1977 to 2018")))
+> mtext(side=1,line=-2.8,cex=1,expression(paste("Data: Scripps C", O[2], " Program")))
+> mtext(side=1,cex=0.7, line=-1.3,"http://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/in_situ_co2/monthly/monthly_in_situ_co2_mlo.csv\nhttp://scrippsco2.ucsd.edu/assets/data/atmospheric/stations/flask_co2/monthly/monthly_flask_co2_nzd.csv")
+> legend(1980, 400, bty="n", c("Mauna Loa Hawaii", "Baring Head New Zealand"), lwd=c(1,2), pch=c(20,NA),lty = 1, col = c("darkgray",2)))
+> mtext(side=4,cex=0.75, line=0.05,R.version.string)
+> dev.off()
+> ```
+bash: {r}: command not found
+bash: command substitution: line 2: syntax error near unexpected token `filename'
+bash: command substitution: line 2: `svg(filename ="Baringhead_co2_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")'
+user@mx3:~
+$ cd /home/user/R/bhd/baringhead/
+user@mx3:~/R/bhd/baringhead
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   readme.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/bhd/baringhead
+$ git add readme.md
+user@mx3:~/R/bhd/baringhead
+$ git commit -a
+[master fb7a6ae] edit readme
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+user@mx3:~/R/bhd/baringhead
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole@gmail.com
+Password for 'https://theecanmole@gmail.com@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/theecanmole/Baring-Head-carbon-dioxide.git/'
+user@mx3:~/R/bhd/baringhead
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 288 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/theecanmole/Baring-Head-carbon-dioxide.git
+   37f9116..fb7a6ae  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/bhd/baringhead
+$ cd ..
+user@mx3:~/R/bhd
+$ cd ..
+user@mx3:~/R
+$ cd /eur/2010to2018/
+bash: cd: /eur/2010to2018/: No such file or directory
+user@mx3:~/R
+$ cd eur/2010to2018/
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	annualallocations_720-540.svg
+	git-commands-history.txt
+	nzu2010to2018.xls
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md sum-allocation-2010-2018.r
+fatal: pathspec 'sum-allocation-2010-2018.r' did not match any files
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md Sum-allocation-2010-2018.r
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 59b2d41] edit readme
+ 2 files changed, 240 insertions(+), 16 deletions(-)
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 4.27 KiB | 0 bytes/s, done.
+Total 4 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   fa24a15..59b2d41  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master bf5d321] edit
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 310 bytes | 0 bytes/s, done.
+Total 3 (delta 2), reused 0 (delta 0)
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   59b2d41..bf5d321  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	annualallocations_720-540.svg
+	git-commands-history.txt
+	nzu2010to2018.xls
+
+nothing added to commit but untracked files present (use "git add" to track)
+user@mx3:~/R/eur/2010to2018
+$ git add annualallocations_720-540.svg
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 8d68711] edit
+ 1 file changed, 535 insertions(+)
+ create mode 100644 annualallocations_720-540.svg
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 18.23 KiB | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   bf5d321..8d68711  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+	modified:   annualallocations_720-540.svg
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	annualallocationsline_720-540.svg
+	git-commands-history.txt
+	nzu2010to2018.xls
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md Sum-allocation-2010-2018.r annualallocations_720-540.svg
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 9d33852] graph
+ 3 files changed, 703 insertions(+), 548 deletions(-)
+ rewrite annualallocations_720-540.svg (77%)
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 24.21 KiB | 0 bytes/s, done.
+Total 5 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   8d68711..9d33852  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	annualallocationsline_720-540.svg
+	git-commands-history.txt
+	nzu2010to2018.xls
+
+nothing added to commit but untracked files present (use "git add" to track)
+user@mx3:~/R/eur/2010to2018
+$ git add annualallocationsline_720-540.svg 
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 72f9cb0] line graph
+ 1 file changed, 707 insertions(+)
+ create mode 100644 annualallocationsline_720-540.svg
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 22.10 KiB | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   9d33852..72f9cb0  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git add nzu2010to2018.xls
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 82c9e95] sheet
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 nzu2010to2018.xls
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+Untracked files:
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	git-commands-history.txt
+
+nothing added to commit but untracked files present
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master 
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 16.63 KiB | 0 bytes/s, done.
+Total 3 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   72f9cb0..82c9e95  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	git-commands-history.txt
+
+-----------------------------------------------------
+Oct 30, 2019, 20:27:48
+
+cd /home/user/R/eur/2010to2018
+
+git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Emissionunits-2010-2018-560by420.png
+	NZ-Steel-unit-value-2010-2018-720by540.png
+	NZ-Steelunits-2010-2018-560by420-v1.png
+	NZAS-Tiwai-units-2010-2018-560by420-v1.png
+	NZASmelter-unit-value-2010-2018-560by420.png
+	git-commands-history.txt
+	nzasallocationvalue20102018.gnumeric
+	nzasallocationvalue20102018.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+git add Readme.md Sum-allocation-2010-2018.r NZASmelter-unit-value-2010-2018-560by420.png NZAS-Tiwai-units-2010-2018-560by420-v1.png 
+
+git commit -a
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 	Ut2CwL3fVe
+Counting objects: 6, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 35.83 KiB | 0 bytes/s, done.
+Total 6 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   82c9e95..959216c  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+
+https://www.interest.co.nz/category/institutions/rio-tinto
