@@ -476,3 +476,31 @@ Branch master set up to track remote branch master from origin.
 user@mx3:~/R/eur/2010to2018
 
 https://www.interest.co.nz/category/institutions/rio-tinto
+Feb 23, 2022, 20:54:13
+
+git add Allocationsto2019.csv,Industrial-Allocations-Final-Decisions.xlsx,NZAL-2010-2020-560by420.png, NZAL-2010-2020-allocations_720-540.svg,git-commands-history.txt,nzal.csv
+
+Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+
+Mar 09, 2022, 16:12:29
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole@gmail.com
+Password for 'https://theecanmole@gmail.com@github.com': 
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+========================
+
+Mar 10, 2022, 17:27:04
+
+Personal access tokens
+
+Tokens you have generated that can be used to access the GitHub API.
+Make sure to copy your personal access token now. You won’t be able to see it again!
+
+
+
+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
