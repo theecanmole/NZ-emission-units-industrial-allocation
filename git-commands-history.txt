@@ -590,3 +590,126 @@ nothing added to commit but untracked files present (use "git add" to track)
 user@mx3:~/R/eur/2010to2018
 Mar 10, 2022, 17:27:04
 
+git add .gitignore Allocations.csv NZAL-2010-2020-560by420F11.png NZAL-2010-2020-allocations_720-540font11.svg NZAL-allocation-value-560by420f12.png NZAL-allocation-value-720-540f12.svg Sum-allocation-2010-2018.html nzal.xls
+
+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
+====================================
+Mar 26, 2022, 15:44:14
+
+user@mx3:~
+$ dir
+Desktop    Downloads  gdrive	       iphone  Pictures  R	 sda.dump      Videos
+Documents  dwhelper   grub-manual.txt  Music   Public	 Refine  testdisk.log
+user@mx3:~
+$ cd R
+user@mx3:~/R/eur
+$ cd 2010to2018
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    NZAL-2010-2020-560by420.png
+	deleted:    NZAL-2010-2020-allocations_720-540.svg
+	deleted:    NZAS-Tiwai-units-2010-2018-560by420-v1.png
+	deleted:    NZASmelter-unit-value-2010-2018-560by420.png
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+	modified:   git-commands-history.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Allocations.csv
+	EPA-emissions-reporting.txt
+	NZAL-2010-2020-560by420F11.png
+	NZAL-2010-2020-allocations_720-540font11.svg
+	NZAL-allocation-value-560by420f12.png
+	NZAL-allocation-value-720-540f12.svg
+	Request for information_ NZ Aluminum Smelters Limited the 2021 provisional allocation of NZUs.txt
+	Sum-allocation-2010-2018.html
+	nzal.xls
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	deleted:    NZAL-2010-2020-560by420.png
+	deleted:    NZAL-2010-2020-allocations_720-540.svg
+	deleted:    NZAS-Tiwai-units-2010-2018-560by420-v1.png
+	deleted:    NZASmelter-unit-value-2010-2018-560by420.png
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+	modified:   git-commands-history.txt
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+	.gitignore
+	Allocations.csv
+	NZAL-2010-2020-560by420F11.png
+	NZAL-2010-2020-allocations_720-540font11.svg
+	NZAL-allocation-value-560by420f12.png
+	NZAL-allocation-value-720-540f12.svg
+	Sum-allocation-2010-2018.html
+	nzal.xls
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git add .gitignore Allocations.csv NZAL-2010-2020-560by420F11.png NZAL-2010-2020-allocations_720-540font11.svg NZAL-allocation-value-560by420f12.png NZAL-allocation-value-720-540f12.svg Sum-allocation-2010-2018.html nzal.xls
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 29f5fd2] update
+ 15 files changed, 3036 insertions(+), 655 deletions(-)
+ create mode 100644 .gitignore
+ create mode 100644 Allocations.csv
+ delete mode 100644 NZAL-2010-2020-560by420.png
+ create mode 100644 NZAL-2010-2020-560by420F11.png
+ delete mode 100644 NZAL-2010-2020-allocations_720-540.svg
+ create mode 100644 NZAL-2010-2020-allocations_720-540font11.svg
+ create mode 100644 NZAL-allocation-value-560by420f12.png
+ create mode 100644 NZAL-allocation-value-720-540f12.svg
+ delete mode 100644 NZAS-Tiwai-units-2010-2018-560by420-v1.png
+ delete mode 100644 NZASmelter-unit-value-2010-2018-560by420.png
+ create mode 100644 Sum-allocation-2010-2018.html
+ create mode 100644 nzal.xls
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+remote: Invalid username or password.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 13, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (13/13), 80.22 KiB | 0 bytes/s, done.
+Total 13 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   9876e77..29f5fd2  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working tree clean
+user@mx3:~/R/eur/2010to2018

@@ -9,10 +9,10 @@ https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-alloc
 #Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs.
 #Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs.
 
-# industry final allocations to 2019
+# Industry final allocations to 2019
 https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Images/Industrial-Allocations-Final-Decisions.xlsx
 
-# industry final allocations to 2020
+# Industry final allocations to 2020
 https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx
 # load packages 
 library(readxl)
@@ -250,6 +250,7 @@ title(cex.main=1.4,main="NZETS Emission Units Allocated to NZ Aluminium Smelters
 mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given 12 million free emission units")))
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
+
 # create a .svg format chart of the market value of free emission units
 svg(filename ="NZAL-2010-2020-allocations_720-540font11.svg", width = 8, height = 6, pointsize = 11, onefile = FALSE, family = "sans", bg = "white")
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
