@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
+<title>Sum-allocation-2010-2018.r</title>
+</head>
+<!-- Highlighting: "R Script" -->
+<body>
+<pre style='color:#1f1c1b;background-color:#ffffff;'>
+<span style='color:#898887;'># NZ Aluminium free industrial allocation of emissions units 2010 to 2021</span>
+
+https:<span style='color:#bf0303;'>//</span>www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/<span style='color:#bf0303;'>    </span>Step <span style='color:#b08000;'>2</span> choose an application type
+<span style='color:#898887;'>#Provisional If you apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment.</span>
+
+https:<span style='color:#bf0303;'>//</span>www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/<span style='color:#bf0303;'>    </span>correct at <span style='color:#b08000;'>27</span>/<span style='color:#b08000;'>02</span>/<span style='color:#b08000;'>2022</span>
+<span style='color:#898887;'>#Deadlines  info@epa.govt.nz</span>
+<span style='color:#898887;'>#You must submit your application via the Register by the following statutory deadlines:</span>
+<span style='color:#898887;'>#Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs.</span>
+<span style='color:#898887;'>#Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs.</span>
+
+<span style='color:#898887;'># industry final allocations to 2019</span>
+https:<span style='color:#bf0303;'>//</span>www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Images/Industrial-Allocations-Final-Decisions.xlsx
+
+<span style='color:#898887;'># industry final allocations to 2020</span>
+https:<span style='color:#bf0303;'>//</span>www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx
+<span style='color:#898887;'># load packages </span>
+<b>library</b>(readxl)
+<b>library</b>(dplyr)
+<b>library</b>(RColorBrewer)
+<b>library</b>(tidyr)
+
+<span style='color:#898887;'># check the working directory and set if necessary</span>
+<b>setwd</b>(<span style='color:#bf0303;'>&quot;/home/user/r/eur/2010t02018&quot;</span>)
+<b>getwd</b>()
+[<span style='color:#b08000;'>1</span>] <span style='color:#bf0303;'>&quot;/home/user/r/eur/2010to2018&quot;</span>
+
+<span style='color:#898887;'># obtain emission unit allocation to industry data from EPA</span>
+
+<b>download.file</b>(<span style='color:#bf0303;'>&quot;https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx&quot;</span>, <span style='color:#bf0303;'>&quot;Industrial-Allocations-Final-Decisions.xlsx&quot;</span>) 
+
+<span style='color:#898887;'># check how many worksheets</span>
+<b>excel_sheets</b>(<span style='color:#bf0303;'>&quot;Industrial-Allocations-Final-Decisions.xlsx&quot;</span>)
+[<span style='color:#b08000;'>1</span>] <span style='color:#bf0303;'>&quot;IA Final Decisions&quot;</span>
+
+Allocations <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>read_excel</b>(<span style='color:#bf0303;'>&quot;Industrial-Allocations-Final-Decisions.xlsx&quot;</span>, <span style='color:#0057ae;'>sheet =</span> <span style='color:#bf0303;'>&quot;IA Final Decisions&quot;</span>,<span style='color:#0057ae;'>skip=</span><span style='color:#b08000;'>3</span>)
+
+<span style='color:#898887;'># I will check the consistency of column/variable names</span>
+<b>str</b>(Allocations)
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>1129</span> obs. of  <span style='color:#b08000;'>4</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity        :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant’s name:<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;Graymont (NZ) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Holcim (New Zealand) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Perry Resources (2008) Ltd&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year            :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> ...
+ $<span style='color:#bf0303;'> </span>Final Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>47144</span> <span style='color:#b08000;'>3653</span> <span style='color:#b08000;'>4712</span> <span style='color:#b08000;'>948</span> ...   
+
+<span style='color:#898887;'># revise and shorten column names</span>
+<b>colnames</b>(Allocations) <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>c</b>(<span style='color:#bf0303;'>&quot;Activity&quot;</span>, <span style='color:#bf0303;'>&quot;Applicant&quot;</span>, <span style='color:#bf0303;'>&quot;Year&quot;</span>, <span style='color:#bf0303;'>&quot;Allocation&quot;</span>)
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>1207</span> obs. of  <span style='color:#b08000;'>4</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity  :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;Graymont (NZ) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Holcim (New Zealand) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Perry Resources (2008) Ltd&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>47144</span> <span style='color:#b08000;'>3653</span> <span style='color:#b08000;'>4712</span> <span style='color:#b08000;'>948</span> ...  
+
+<span style='color:#898887;'># what is most recent year? </span>
+<b>max</b>(Allocations[[<span style='color:#bf0303;'>&quot;Year&quot;</span>]])
+[<span style='color:#b08000;'>1</span>] <span style='color:#b08000;'>2020</span>  
+
+<span style='color:#898887;'># filter by year</span>
+<b>head</b>(<b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'> &quot;2010&quot;</span> ))
+<span style='color:#898887;'># A tibble: 6 x 4</span>
+  Activity           Applicant                                 Year Allocation
+  &lt;chr&gt;<span style='color:#bf0303;'>              </span><span style='color:#bf0303;'>&lt;</span>chr&gt;<span style='color:#bf0303;'>                                    </span><span style='color:#bf0303;'>&lt;</span>dbl&gt;<span style='color:#bf0303;'>      </span><span style='color:#bf0303;'>&lt;</span>dbl&gt;
+<span style='color:#b08000;'>1</span> Aluminium smelting New Zealand Aluminium Smelters Limited    <span style='color:#b08000;'>2010</span>     <span style='color:#b08000;'>210421</span>
+<span style='color:#b08000;'>2</span> Burnt lime         <b>Graymont</b> (NZ) Limited                     <span style='color:#b08000;'>2010</span>      <span style='color:#b08000;'>47144</span>
+<span style='color:#b08000;'>3</span> Burnt lime         <b>Holcim</b> (New Zealand) Limited              <span style='color:#b08000;'>2010</span>       <span style='color:#b08000;'>3653</span>
+<span style='color:#b08000;'>4</span> Burnt lime         Perry <b>Resources</b> (<span style='color:#b08000;'>2008</span>) Ltd                <span style='color:#b08000;'>2010</span>       <span style='color:#b08000;'>4712</span>
+<span style='color:#b08000;'>5</span> Burnt lime         Websters Hydrated Lime Company Limited    <span style='color:#b08000;'>2010</span>        <span style='color:#b08000;'>948</span>
+
+<span style='color:#898887;'># separate data into years</span>
+nzu2010 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2010&quot;</span>)
+nzu2011 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2011&quot;</span>)
+nzu2012 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2012&quot;</span>)
+nzu2013 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2013&quot;</span>)
+nzu2014 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2014&quot;</span>)
+nzu2015 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2015&quot;</span>)
+nzu2016 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2016&quot;</span>)
+nzu2017 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2017&quot;</span>)
+nzu2018 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2018&quot;</span>)
+nzu2019 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2019&quot;</span>) 
+nzu2020 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Year ==<span style='color:#bf0303;'>&quot;2020&quot;</span>)  
+
+<span style='color:#898887;'># check just the 2010 data</span>
+<b>str</b>(nzu2010)
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>141</span> obs. of  <span style='color:#b08000;'>4</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity  :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;Graymont (NZ) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Holcim (New Zealand) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Perry Resources (2008) Ltd&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>47144</span> <span style='color:#b08000;'>3653</span> <span style='color:#b08000;'>4712</span> <span style='color:#b08000;'>948</span> ...   
+ 
+<span style='color:#898887;'># Each year, from May, the EPA makes a 'provisional' allocation of emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu</span>
+<span style='color:#898887;'># The NZU repository has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328</span>
+<span style='color:#898887;'># I will add a NZU market price value at the May average price from 2010 to 2019 </span>
+
+nzu2010[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2010[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>17.58</span>
+nzu2011[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2011[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>19.84</span>
+nzu2012[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2012[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>6.23</span>
+nzu2013[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2013[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>1.94</span>
+nzu2014[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2014[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>4.08</span>
+nzu2015[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2015[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>5.34</span>
+nzu2016[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2016[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>14.63</span>
+nzu2017[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2017[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>16.96</span>
+nzu2018[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2018[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>21.28</span>
+nzu2019[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2019[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>25.29</span> 
+nzu2020[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]] <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span>nzu2020[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]]*<span style='color:#b08000;'>24.84</span>
+
+<span style='color:#898887;'># combine all year data together into 1 dataframe - I use rbind as all the column names are consistent</span>
+Allocations <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>rbind</b>(nzu2010,nzu2011,nzu2012,nzu2013,nzu2014,nzu2015,nzu2016,nzu2017,nzu2018,nzu2019,nzu2020)
+
+<span style='color:#898887;'># check the new dataframe</span>
+<b>str</b>(Allocations)
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>1207</span> obs. of  <span style='color:#b08000;'>5</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity  :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;Graymont (NZ) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Holcim (New Zealand) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Perry Resources (2008) Ltd&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>47144</span> <span style='color:#b08000;'>3653</span> <span style='color:#b08000;'>4712</span> <span style='color:#b08000;'>948</span> ...
+ $<span style='color:#bf0303;'> </span>Value     :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>828792</span> <span style='color:#b08000;'>64220</span> <span style='color:#b08000;'>82837</span> <span style='color:#b08000;'>16666</span> ...  
+ 
+<span style='color:#898887;'># read my csv data file back into R if needed</span>
+Allocations <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>read.csv</b>(<span style='color:#bf0303;'>&quot;Allocations.csv&quot;</span>) 
+
+<span style='color:#898887;'># Create a .csv formatted data file</span>
+<b>write.csv</b>(Allocations, <span style='color:#0057ae;'>file =</span> <span style='color:#bf0303;'>&quot;Allocations.csv&quot;</span>, <span style='color:#0057ae;'>row.names =</span> <span style='color:#006e28;'>FALSE</span>)
+
+<span style='color:#898887;'># Create a Windows Excel 2007/10 formatted data file (if needed)</span>
+<b>write.csv</b>(Allocations, <span style='color:#0057ae;'>file =</span> <span style='color:#bf0303;'>&quot;Allocations.xls&quot;</span>, <span style='color:#0057ae;'>row.names =</span> <span style='color:#006e28;'>FALSE</span>, <span style='color:#0057ae;'>fileEncoding =</span> <span style='color:#bf0303;'>&quot;UTF-16LE&quot;</span>) 
+
+<span style='color:#898887;'># read back in the new 2010 2020 data if needed</span>
+Allocations <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>read.csv</b>(<span style='color:#bf0303;'>&quot;Allocations.csv&quot;</span>) 
+
+<b>str</b>(Allocations)
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>1207</span> obs. of  <span style='color:#b08000;'>5</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity  :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> <span style='color:#bf0303;'>&quot;Burnt lime&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;Graymont (NZ) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Holcim (New Zealand) Limited&quot;</span> <span style='color:#bf0303;'>&quot;Perry Resources (2008) Ltd&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2010</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>47144</span> <span style='color:#b08000;'>3653</span> <span style='color:#b08000;'>4712</span> <span style='color:#b08000;'>948</span> ...
+ $<span style='color:#bf0303;'> </span>Value     :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>828792</span> <span style='color:#b08000;'>64220</span> <span style='color:#b08000;'>82837</span> <span style='color:#b08000;'>16666</span> ...  
+ 
+ <span style='color:#898887;'># look at summary of allocations dataframe</span>
+ <b>summary</b>(Allocations)
+                      Activity                              Applicant   
+ Fresh tomatoes           :<span style='color:#b08000;'>314</span>   Oji Fibre <b>Solutions</b> (NZ) Limited:<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>33</span>  
+ Protein meal             :<span style='color:#b08000;'>180</span>   Under <b>Glass</b> (Bombay) Ltd        :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>28</span>  
+ Fresh capsicums          :<span style='color:#b08000;'>150</span>   J.S.Ewers Ltd                   :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>26</span>  
+ Fresh cucumbers          :<span style='color:#b08000;'>123</span>   Gourmet Mokai Limited           :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>22</span>  
+ Cut roses                :<span style='color:#bf0303;'> </span><span style='color:#b08000;'>97</span>   Parkgard Growers <span style='color:#b08000;'>2000</span> Limited   :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>19</span>  
+ Reconstituted wood panels:<span style='color:#bf0303;'> </span><span style='color:#b08000;'>61</span>   Jai Shankar Growers Limited     :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>17</span>  
+ (Other)                  :<span style='color:#b08000;'>282</span>   (Other)                         :<span style='color:#b08000;'>1062</span>  
+      Year        Allocation          Value         
+ Min.   :<span style='color:#b08000;'>2010</span>   Min.   :<span style='color:#bf0303;'>      </span><span style='color:#b08000;'>1</span>   Min.   :<span style='color:#bf0303;'>       </span><span style='color:#b08000;'>4</span>  
+ <span style='color:#b08000;'>1</span>st Qu.:<span style='color:#b08000;'>2012</span>   <span style='color:#b08000;'>1</span>st Qu.:<span style='color:#bf0303;'>    </span><span style='color:#b08000;'>160</span>   <span style='color:#b08000;'>1</span>st Qu.:<span style='color:#bf0303;'>    </span><span style='color:#b08000;'>1527</span>  
+ Median :<span style='color:#b08000;'>2014</span>   Median :<span style='color:#bf0303;'>   </span><span style='color:#b08000;'>1075</span>   Median :<span style='color:#bf0303;'>   </span><span style='color:#b08000;'>11374</span>  
+ Mean   :<span style='color:#b08000;'>2014</span>   Mean   :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>45569</span>   Mean   :<span style='color:#bf0303;'>  </span><span style='color:#b08000;'>724853</span>  
+ <span style='color:#b08000;'>3</span>rd Qu.:<span style='color:#b08000;'>2017</span>   <span style='color:#b08000;'>3</span>rd Qu.:<span style='color:#bf0303;'>   </span><span style='color:#b08000;'>6916</span>   <span style='color:#b08000;'>3</span>rd Qu.:<span style='color:#bf0303;'>   </span><span style='color:#b08000;'>83210</span>  
+ Max.   :<span style='color:#b08000;'>2020</span>   Max.   :<span style='color:#b08000;'>2118983</span>   Max.   :<span style='color:#b08000;'>53589080</span>  
+ 
+<span style='color:#898887;'># How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for their allocation. Create a dataframe.</span>
+nzal <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>filter</b>(Allocations, Applicant ==<span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span>) 
+
+<span style='color:#898887;'># what does that dataframe that look like?</span>
+<b>str</b>(nzal) 
+Classes ‘tbl_df’, ‘tbl’ and <span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>11</span> obs. of  <span style='color:#b08000;'>5</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Activity  :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> <span style='color:#bf0303;'>&quot;Aluminium smelting&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Applicant :<span style='color:#bf0303;'> </span>chr  <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> <span style='color:#bf0303;'>&quot;New Zealand Aluminium Smelters Limited&quot;</span> ...
+ $<span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2011</span> <span style='color:#b08000;'>2012</span> <span style='color:#b08000;'>2013</span> <span style='color:#b08000;'>2014</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>437681</span> <span style='color:#b08000;'>301244</span> <span style='color:#b08000;'>1524172</span> <span style='color:#b08000;'>755987</span> ...
+ $<span style='color:#bf0303;'> </span>Value     :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>8683591</span> <span style='color:#b08000;'>1876750</span> <span style='color:#b08000;'>2956894</span> <span style='color:#b08000;'>3084427</span> ...  
+
+<span style='color:#898887;'># filter out redundant columns to leave year allocation and value</span>
+nzal <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>select</b>(nzal, -Activity, -Applicant)
+<span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>11</span> obs. of  <span style='color:#b08000;'>3</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>int  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2011</span> <span style='color:#b08000;'>2012</span> <span style='color:#b08000;'>2013</span> <span style='color:#b08000;'>2014</span> <span style='color:#b08000;'>2015</span> <span style='color:#b08000;'>2016</span> <span style='color:#b08000;'>2017</span> <span style='color:#b08000;'>2018</span> <span style='color:#b08000;'>2019</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>int  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>437681</span> <span style='color:#b08000;'>301244</span> <span style='color:#b08000;'>1524172</span> <span style='color:#b08000;'>755987</span> <span style='color:#b08000;'>772706</span> <span style='color:#b08000;'>786306</span> <span style='color:#b08000;'>1038914</span> <span style='color:#b08000;'>1324556</span> <span style='color:#b08000;'>1697437</span> ...
+ $<span style='color:#bf0303;'> </span>Value     :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>8683591</span> <span style='color:#b08000;'>1876750</span> <span style='color:#b08000;'>2956894</span> <span style='color:#b08000;'>3084427</span> ...  
+
+<span style='color:#898887;'># what is the most recent year allocation? It is 2020. </span>
+<b>tail</b>(nzal,<span style='color:#b08000;'>1</span>)
+  Year Allocation    Value
+<span style='color:#b08000;'>11</span> <span style='color:#b08000;'>2020</span>    <span style='color:#b08000;'>1558268</span> <span style='color:#b08000;'>38707377</span> 
+
+<span style='color:#898887;'># How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html Section 81(1) of the Climate Change Response Act 2002. Obtain 2020 final allocation of units and divide by final Allocation Baseline (see Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010 https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production</span>
+<span style='color:#b08000;'>1558268</span> /<span style='color:#bf0303;'> </span><span style='color:#b08000;'>5.194</span> 
+[<span style='color:#b08000;'>1</span>]  <span style='color:#b08000;'>300013.1</span> tonnes
+
+<span style='color:#898887;'>#What is 2021 provisional allocation? It is 2020 production * provisional AB (5.130) Multiply 2020 actual production by final allocation baseline from Regulation 7.</span>
+<span style='color:#b08000;'>300013.1</span> *<span style='color:#bf0303;'> </span><span style='color:#b08000;'>5.130</span>
+[<span style='color:#b08000;'>1</span>] <span style='color:#b08000;'>1539067</span>
+
+<span style='color:#898887;'># what is the market value of the 2021 provisional allocation assuming a mid May 2021 carbon price 37.14 per tonne</span>
+<span style='color:#b08000;'>1539067</span> *<span style='color:#bf0303;'> </span><span style='color:#b08000;'>37.14</span>
+[<span style='color:#b08000;'>1</span>] <span style='color:#b08000;'>57160948</span> 
+
+<span style='color:#898887;'># add provisional 2021 allocation to data frame 'nzal'</span>
+nzal <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>rbind</b> (nzal,<b>c</b>(<span style='color:#b08000;'>2021</span>,<span style='color:#b08000;'>1539067</span>,<span style='color:#b08000;'>57160948</span>))
+
+<span style='color:#898887;'># check the dataframe</span>
+<b>str</b>(nzal) 
+<span style='color:#bf0303;'>'data.frame'</span>:	<span style='color:#b08000;'>12</span> obs. of  <span style='color:#b08000;'>3</span> variables:
+<span style='color:#bf0303;'> </span><span style='color:#bf0303;'>$</span><span style='color:#bf0303;'> </span>Year      :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>2010</span> <span style='color:#b08000;'>2011</span> <span style='color:#b08000;'>2012</span> <span style='color:#b08000;'>2013</span> <span style='color:#b08000;'>2014</span> ...
+ $<span style='color:#bf0303;'> </span>Allocation:<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>210421</span> <span style='color:#b08000;'>437681</span> <span style='color:#b08000;'>301244</span> <span style='color:#b08000;'>1524172</span> <span style='color:#b08000;'>755987</span> ...
+ $<span style='color:#bf0303;'> </span>Value     :<span style='color:#bf0303;'> </span>num  <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>8683591</span> <span style='color:#b08000;'>1876750</span> <span style='color:#b08000;'>2956894</span> <span style='color:#b08000;'>3084427</span> ...   
+
+<span style='color:#898887;'># What data is there for last year 2021 </span>
+<b>tail</b>(nzal,<span style='color:#b08000;'>1</span>) 
+   Year Allocation    Value
+<span style='color:#b08000;'>12</span> <span style='color:#b08000;'>2021</span>    <span style='color:#b08000;'>1539067</span> <span style='color:#b08000;'>57160948</span> 
+
+<span style='color:#898887;'># Create .csv formatted data file</span>
+<b>write.csv</b>(nzal, <span style='color:#0057ae;'>file =</span> <span style='color:#bf0303;'>&quot;nzal.csv&quot;</span>, <span style='color:#0057ae;'>row.names =</span> <span style='color:#006e28;'>FALSE</span>)
+
+<span style='color:#898887;'># Create a Windows Excel 2007/10 formatted data file (if needed)</span>
+<b>write.csv</b>(nzal, <span style='color:#0057ae;'>file =</span> <span style='color:#bf0303;'>&quot;nzal.xls&quot;</span>, <span style='color:#0057ae;'>row.names =</span> <span style='color:#006e28;'>FALSE</span>, <span style='color:#0057ae;'>fileEncoding =</span> <span style='color:#bf0303;'>&quot;UTF-16LE&quot;</span>)   
+
+<span style='color:#898887;'># read my csv data file back into R</span>
+nzal <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>read.csv</b>(<span style='color:#bf0303;'>&quot;nzal.csv&quot;</span>) 
+
+<span style='color:#898887;'># How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?</span>
+<b>sum</b>(nzal[[<span style='color:#bf0303;'>&quot;Allocation&quot;</span>]])  
+[<span style='color:#b08000;'>1</span>] <span style='color:#b08000;'>11946759</span>
+<span style='color:#898887;'># 11,946,759 or 11.946759 million emission units  or call it 12 million</span>
+
+<span style='color:#898887;'># What was the market value of the emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited each year?</span>
+<b>sum</b>(nzal[[<span style='color:#bf0303;'>&quot;Value&quot;</span>]])
+[<span style='color:#b08000;'>1</span>] <span style='color:#b08000;'>220533810</span> or <span style='color:#b08000;'>220</span>,<span style='color:#b08000;'>533</span>,<span style='color:#b08000;'>810</span> -<span style='color:#bf0303;'> </span><span style='color:#b08000;'>220.533810</span> million $NZD
+
+<span style='color:#898887;'># look at market value for each year</span>
+<b>select</b>(nzal, -Value) 
+<span style='color:#898887;'># A tibble: 11 x 2</span>
+    Year Allocation
+   &lt;dbl&gt;<span style='color:#bf0303;'>      </span><span style='color:#bf0303;'>&lt;</span>dbl&gt;
+<span style='color:#bf0303;'> </span><span style='color:#b08000;'>1</span>  <span style='color:#b08000;'>2010</span>     <span style='color:#b08000;'>210421</span>
+ <span style='color:#b08000;'>2</span>  <span style='color:#b08000;'>2011</span>     <span style='color:#b08000;'>437681</span>
+ <span style='color:#b08000;'>3</span>  <span style='color:#b08000;'>2012</span>     <span style='color:#b08000;'>301244</span>
+ <span style='color:#b08000;'>4</span>  <span style='color:#b08000;'>2013</span>    <span style='color:#b08000;'>1524172</span>
+ <span style='color:#b08000;'>5</span>  <span style='color:#b08000;'>2014</span>     <span style='color:#b08000;'>755987</span>
+ <span style='color:#b08000;'>6</span>  <span style='color:#b08000;'>2015</span>     <span style='color:#b08000;'>772706</span>
+ <span style='color:#b08000;'>7</span>  <span style='color:#b08000;'>2016</span>     <span style='color:#b08000;'>786306</span>
+ <span style='color:#b08000;'>8</span>  <span style='color:#b08000;'>2017</span>    <span style='color:#b08000;'>1038914</span>
+ <span style='color:#b08000;'>9</span>  <span style='color:#b08000;'>2018</span>    <span style='color:#b08000;'>1324556</span>
+<span style='color:#b08000;'>10</span>  <span style='color:#b08000;'>2019</span>    <span style='color:#b08000;'>1697437</span>
+<span style='color:#b08000;'>11</span>  <span style='color:#b08000;'>2020</span>    <span style='color:#b08000;'>1558268</span> 
+
+<span style='color:#898887;'># edit the market values into a matrix</span>
+nzalmatrix1 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>matrix</b>(<b>c</b>(<span style='color:#b08000;'>210421</span>,<span style='color:#b08000;'>437681</span>,<span style='color:#b08000;'>301244</span>,<span style='color:#b08000;'>1524172</span>,<span style='color:#b08000;'>755987</span>,<span style='color:#b08000;'>772706</span>,<span style='color:#b08000;'>786306</span>,<span style='color:#b08000;'>1038914</span>,<span style='color:#b08000;'>1324556</span>,<span style='color:#b08000;'>1697437</span>,<span style='color:#b08000;'>1558268</span>,<span style='color:#b08000;'>1539067</span>), <span style='color:#0057ae;'>nrow =</span> <span style='color:#b08000;'>1</span>, <span style='color:#0057ae;'>ncol=</span><span style='color:#b08000;'>12</span>, <span style='color:#0057ae;'>byrow=</span><span style='color:#006e28;'>TRUE</span>, <span style='color:#0057ae;'>dimnames =</span> <b>list</b>(<b>c</b>(<span style='color:#bf0303;'>&quot;Units&quot;</span>), <b>c</b>(<span style='color:#bf0303;'>&quot;2010&quot;</span>, <span style='color:#bf0303;'>&quot;2011&quot;</span>, <span style='color:#bf0303;'>&quot;2012&quot;</span>,<span style='color:#bf0303;'>&quot;2013&quot;</span>,<span style='color:#bf0303;'>&quot;2014&quot;</span>,<span style='color:#bf0303;'>&quot;2015&quot;</span>,<span style='color:#bf0303;'>&quot;2016&quot;</span>,<span style='color:#bf0303;'>&quot;2017&quot;</span>,<span style='color:#bf0303;'>&quot;2018&quot;</span>,<span style='color:#bf0303;'>&quot;2019&quot;</span>,<span style='color:#bf0303;'>&quot;2020&quot;</span>,<span style='color:#bf0303;'>&quot;2021&quot;</span>)))
+
+<span style='color:#898887;'># create a small .png format chart of the market value of free emission units</span>
+<b>png</b>(<span style='color:#bf0303;'>&quot;NZAL-2010-2020-560by420F11.png&quot;</span>, <span style='color:#0057ae;'>bg=</span><span style='color:#bf0303;'>&quot;white&quot;</span>, <span style='color:#0057ae;'>width=</span><span style='color:#b08000;'>560</span>, <span style='color:#0057ae;'>height=</span><span style='color:#b08000;'>420</span>,<span style='color:#0057ae;'>pointsize =</span> <span style='color:#b08000;'>11</span>)
+<b>par</b>(<span style='color:#0057ae;'>mar=</span><b>c</b>(<span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>2</span>)+<span style='color:#b08000;'>0.1</span>)
+<b>barplot</b>(nzalmatrix1/<span style='color:#b08000;'>10</span>^<span style='color:#b08000;'>6</span>,<span style='color:#0057ae;'>las=</span><span style='color:#b08000;'>1</span>) 
+<b>title</b>(<span style='color:#0057ae;'>cex.main=</span><span style='color:#b08000;'>1.4</span>,<span style='color:#0057ae;'>main=</span><span style='color:#bf0303;'>&quot;NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd&quot;</span>,<span style='color:#0057ae;'>ylab=</span><span style='color:#bf0303;'>&quot;NZ Units (millions)&quot;</span>)
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>3</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>0.25</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;From 2010 to 2021 NZ Aluminium Smelters Ltd were given 12 million free emission units&quot;</span>)))
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>1</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>2.5</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/&quot;</span>)))
+<b>dev.off</b>()
+<span style='color:#898887;'># create a .svg format chart of the market value of free emission units</span>
+<b>svg</b>(<span style='color:#0057ae;'>filename =</span><span style='color:#bf0303;'>&quot;NZAL-2010-2020-allocations_720-540font11.svg&quot;</span>, <span style='color:#0057ae;'>width =</span> <span style='color:#b08000;'>8</span>, <span style='color:#0057ae;'>height =</span> <span style='color:#b08000;'>6</span>, <span style='color:#0057ae;'>pointsize =</span> <span style='color:#b08000;'>11</span>, <span style='color:#0057ae;'>onefile =</span> <span style='color:#006e28;'>FALSE</span>, <span style='color:#0057ae;'>family =</span> <span style='color:#bf0303;'>&quot;sans&quot;</span>, <span style='color:#0057ae;'>bg =</span> <span style='color:#bf0303;'>&quot;white&quot;</span>)
+<b>par</b>(<span style='color:#0057ae;'>mar=</span><b>c</b>(<span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>2</span>)+<span style='color:#b08000;'>0.1</span>)
+<b>barplot</b>(nzalmatrix1/<span style='color:#b08000;'>10</span>^<span style='color:#b08000;'>6</span>,<span style='color:#0057ae;'>las=</span><span style='color:#b08000;'>1</span>) 
+<b>title</b>(<span style='color:#0057ae;'>cex.main=</span><span style='color:#b08000;'>1.4</span>,<span style='color:#0057ae;'>main=</span><span style='color:#bf0303;'>&quot;NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd&quot;</span>,<span style='color:#0057ae;'>ylab=</span><span style='color:#bf0303;'>&quot;NZ Units (millions)&quot;</span>)
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>3</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>0.25</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;From 2010 to 2021 NZ Aluminium Smelters Ltd were given 12 million free emission units&quot;</span>)))
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>1</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>2.5</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/&quot;</span>)))
+<b>dev.off</b>()
+
+<span style='color:#898887;'># just select the value of NZALs allocations of emissions units</span>
+<b>select</b>(nzal, Value) 
+      Value
+<span style='color:#b08000;'>1</span>   <span style='color:#b08000;'>3699201</span>
+<span style='color:#b08000;'>2</span>   <span style='color:#b08000;'>8683591</span>
+<span style='color:#b08000;'>3</span>   <span style='color:#b08000;'>1876750</span>
+<span style='color:#b08000;'>4</span>   <span style='color:#b08000;'>2956894</span>
+<span style='color:#b08000;'>5</span>   <span style='color:#b08000;'>3084427</span>
+<span style='color:#b08000;'>6</span>   <span style='color:#b08000;'>4126250</span>
+<span style='color:#b08000;'>7</span>  <span style='color:#b08000;'>11503657</span>
+<span style='color:#b08000;'>8</span>  <span style='color:#b08000;'>17619981</span>
+<span style='color:#b08000;'>9</span>  <span style='color:#b08000;'>28186552</span>
+<span style='color:#b08000;'>10</span> <span style='color:#b08000;'>42928182</span>
+<span style='color:#b08000;'>11</span> <span style='color:#b08000;'>38707377</span>
+<span style='color:#b08000;'>12</span> <span style='color:#b08000;'>57160948</span>  
+<span style='color:#898887;'># edit them into matrix for use in a barplot </span>
+
+nzalmatrix2 <b><span style='color:#336366;'>&lt;-</span></b><span style='color:#bf0303;'> </span><b>matrix</b>(<b>c</b>(<span style='color:#b08000;'>3699201</span>,<span style='color:#b08000;'>8683591</span>,<span style='color:#b08000;'>1876750</span>,<span style='color:#b08000;'>2956894</span>,<span style='color:#b08000;'>3084427</span>,<span style='color:#b08000;'>4126250</span>,<span style='color:#b08000;'>11503657</span>,<span style='color:#b08000;'>17619981</span>,<span style='color:#b08000;'>28186552</span>,<span style='color:#b08000;'>42928182</span>,<span style='color:#b08000;'>38707377</span>,<span style='color:#b08000;'>57160948</span>), <span style='color:#0057ae;'>nrow =</span> <span style='color:#b08000;'>1</span>, <span style='color:#0057ae;'>ncol=</span><span style='color:#b08000;'>12</span>, <span style='color:#0057ae;'>byrow=</span><span style='color:#006e28;'>TRUE</span>, <span style='color:#0057ae;'>dimnames =</span> <b>list</b>(<b>c</b>(<span style='color:#bf0303;'>&quot;Units&quot;</span>), <b>c</b>(<span style='color:#bf0303;'>&quot;2010&quot;</span>, <span style='color:#bf0303;'>&quot;2011&quot;</span>, <span style='color:#bf0303;'>&quot;2012&quot;</span>,<span style='color:#bf0303;'>&quot;2013&quot;</span>,<span style='color:#bf0303;'>&quot;2014&quot;</span>,<span style='color:#bf0303;'>&quot;2015&quot;</span>,<span style='color:#bf0303;'>&quot;2016&quot;</span>,<span style='color:#bf0303;'>&quot;2017&quot;</span>,<span style='color:#bf0303;'>&quot;2018&quot;</span>,<span style='color:#bf0303;'>&quot;2019&quot;</span>,<span style='color:#bf0303;'>&quot;2020&quot;</span>,<span style='color:#bf0303;'>&quot;2021&quot;</span>)))
+<span style='color:#898887;'># check matrix </span>
+nzalmatrix2 
+        <span style='color:#b08000;'>2010</span>    <span style='color:#b08000;'>2011</span>    <span style='color:#b08000;'>2012</span>    <span style='color:#b08000;'>2013</span>    <span style='color:#b08000;'>2014</span>    <span style='color:#b08000;'>2015</span>     <span style='color:#b08000;'>2016</span>     <span style='color:#b08000;'>2017</span>
+Units <span style='color:#b08000;'>3699201</span> <span style='color:#b08000;'>8683591</span> <span style='color:#b08000;'>1876750</span> <span style='color:#b08000;'>2956894</span> <span style='color:#b08000;'>3084427</span> <span style='color:#b08000;'>4126250</span> <span style='color:#b08000;'>11503657</span> <span style='color:#b08000;'>17619981</span>
+          <span style='color:#b08000;'>2018</span>     <span style='color:#b08000;'>2019</span>     <span style='color:#b08000;'>2020</span>     <span style='color:#b08000;'>2021</span>
+Units <span style='color:#b08000;'>28186552</span> <span style='color:#b08000;'>42928182</span> <span style='color:#b08000;'>38707377</span> <span style='color:#b08000;'>57160948</span> 
+
+<span style='color:#898887;'># create small .png chart</span>
+<b>png</b>(<span style='color:#bf0303;'>&quot;NZAL-allocation-value-560by420f12.png&quot;</span>, <span style='color:#0057ae;'>bg=</span><span style='color:#bf0303;'>&quot;white&quot;</span>, <span style='color:#0057ae;'>width=</span><span style='color:#b08000;'>560</span>, <span style='color:#0057ae;'>height=</span><span style='color:#b08000;'>420</span>,<span style='color:#0057ae;'>pointsize =</span> <span style='color:#b08000;'>11</span>)
+<b>par</b>(<span style='color:#0057ae;'>mar=</span><b>c</b>(<span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>2</span>)+<span style='color:#b08000;'>0.1</span>)
+<b>barplot</b>(nzalmatrix2/<span style='color:#b08000;'>10</span>^<span style='color:#b08000;'>6</span>,<span style='color:#0057ae;'>las=</span><span style='color:#b08000;'>1</span>) 
+<b>title</b>(<span style='color:#0057ae;'>cex.main=</span><span style='color:#b08000;'>1.3</span>,<span style='color:#0057ae;'>main=</span><span style='color:#bf0303;'>&quot;NZ Aluminium Smelters Ltd Value of Allocated Emission Units&quot;</span>,<span style='color:#0057ae;'>ylab=</span><span style='color:#bf0303;'>&quot;$NZD million&quot;</span>)
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>3</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>0.25</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;From 2010 to 2021 NZ Aluminium Smelters Ltd were given free emission units worth $220 million&quot;</span>)))
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>1</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>2.5</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/&quot;</span>)))
+<b>dev.off</b>()
+
+<span style='color:#898887;'># create slightly larger .svg format chart</span>
+<b>svg</b>(<span style='color:#0057ae;'>filename =</span><span style='color:#bf0303;'>&quot;NZAL-allocation-value-720-540f12.svg&quot;</span>, <span style='color:#0057ae;'>width =</span> <span style='color:#b08000;'>8</span>, <span style='color:#0057ae;'>height =</span> <span style='color:#b08000;'>6</span>, <span style='color:#0057ae;'>pointsize =</span> <span style='color:#b08000;'>12</span>, <span style='color:#0057ae;'>onefile =</span> <span style='color:#006e28;'>FALSE</span>, <span style='color:#0057ae;'>family =</span> <span style='color:#bf0303;'>&quot;sans&quot;</span>, <span style='color:#0057ae;'>bg =</span> <span style='color:#bf0303;'>&quot;white&quot;</span>)
+<b>par</b>(<span style='color:#0057ae;'>mar=</span><b>c</b>(<span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>4.4</span>, <span style='color:#b08000;'>2</span>)+<span style='color:#b08000;'>0.1</span>)
+<b>barplot</b>(nzalmatrix2/<span style='color:#b08000;'>10</span>^<span style='color:#b08000;'>6</span>,<span style='color:#0057ae;'>las=</span><span style='color:#b08000;'>1</span>) 
+<b>title</b>(<span style='color:#0057ae;'>cex.main=</span><span style='color:#b08000;'>1.4</span>,<span style='color:#0057ae;'>main=</span><span style='color:#bf0303;'>&quot;NZ Aluminium Smelters Ltd Value of Allocated Emission Units&quot;</span>,<span style='color:#0057ae;'>ylab=</span><span style='color:#bf0303;'>&quot;$NZD million&quot;</span>)
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>3</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>0.25</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>1</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;From 2010 to 2021 NZ Aluminium Smelters Ltd were given free emission units worth $220 million&quot;</span>)))
+<b>mtext</b>(<span style='color:#0057ae;'>side=</span><span style='color:#b08000;'>1</span>,<span style='color:#0057ae;'>line=</span><span style='color:#b08000;'>2.5</span>,<span style='color:#0057ae;'>cex=</span><span style='color:#b08000;'>0.9</span>,<b>expression</b>(<b>paste</b>(<span style='color:#bf0303;'>&quot;Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/&quot;</span>)))
+<b>dev.off</b>()
+</pre>
+</body>
+</html>

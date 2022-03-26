@@ -28,7 +28,7 @@ svg(filename ="NZAL-2010-2020-allocations_720-540.svg", width = 8, height = 6, p
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
 barplot(nzalmatrix1/10^6,las=1) 
 title(cex.main=1.2,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
-mtext(side=3,line=0.25,cex=0.8,expression(paste("NZ Aluminium Smelters Ltd were given 10 million free emission units from 2010 to 2020")))
+mtext(side=3,line=0.25,cex=0.8,expression(paste("NZ Aluminium Smelters Ltd were given 12 million free emission units from 2010 to 2020")))
 mtext(side=1,line=2.5,cex=0.8,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```

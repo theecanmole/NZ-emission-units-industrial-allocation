@@ -1,11 +1,4 @@
-# NZ Aluminium free industrial allocation of emissions units 2010 to 2019
-# https://www.stuff.co.nz/business/123965739/broker-believes-tiwai-smelter-beat-down-meridian-on-power-price-by-36
-# Rio Tinto managed to beat down the price it pays to power the Tiwai Point aluminium smelter by more than a third, from about 5.5 cents per kilowatt # hour to about 3.5c/kWh, Forsyth Barr believes.
-
-#The smelter has agreed to buy 572 megawatts of power from Meridian, of which 100MW will be provided by Contact Energy, which Forsyth Barr said was 20MW more than the current Contact supply deal.
-
-#latest version https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075101.html
-# Climate Change (Eligible Industrial Activities) Regulations 2010 as at 30 April 2021
+# NZ Aluminium free industrial allocation of emissions units 2010 to 2021
 
 https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/    Step 2 choose an application type
 #Provisional If you apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment.
@@ -86,7 +79,7 @@ nzu2018 <- filter(Allocations, Year =="2018")
 nzu2019 <- filter(Allocations, Year =="2019") 
 nzu2020 <- filter(Allocations, Year =="2020")  
 
-# check 2010 data
+# check just the 2010 data
 str(nzu2010)
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	141 obs. of  4 variables:
  $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
@@ -94,7 +87,7 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	141 obs. of  4 variables:
  $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
  $ Allocation: num  210421 47144 3653 4712 948 ...   
  
-# Each year, in May, the EPA allocates emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu
+# Each year, from May, the EPA makes a 'provisional' allocation of emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu
 # The NZU repository has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328
 # I will add a NZU market price value at the May average price from 2010 to 2019 
 
@@ -111,10 +104,10 @@ nzu2019[["Value"]] <- nzu2019[["Allocation"]]*25.29
 nzu2020[["Value"]] <- nzu2020[["Allocation"]]*24.84
 
 # combine all year data together into 1 dataframe - I use rbind as all the column names are consistent
-Allocationsto2019 <- rbind(nzu2010,nzu2011,nzu2012,nzu2013,nzu2014,nzu2015,nzu2016,nzu2017,nzu2018,nzu2019,nzu2020)
+Allocations <- rbind(nzu2010,nzu2011,nzu2012,nzu2013,nzu2014,nzu2015,nzu2016,nzu2017,nzu2018,nzu2019,nzu2020)
 
 # check the new dataframe
-str(Allocationsto2019)
+str(Allocations)
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
  $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
  $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
@@ -122,23 +115,17 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
  $ Allocation: num  210421 47144 3653 4712 948 ...
  $ Value     : num  3699201 828792 64220 82837 16666 ...  
  
-# filter by year
-filter(Allocationsto2019, Year == "2010" )
-# same as head  
+# read my csv data file back into R if needed
+Allocations <- read.csv("Allocations.csv") 
 
-# same in Base R
-Allocationsto2019[Allocationsto2019[["Year"]] == "2010",]
+# Create a .csv formatted data file
+write.csv(Allocations, file = "Allocations.csv", row.names = FALSE)
 
-Allocationsto2020 <- read.csv("Allocationsto2019.csv") 
-
-# Create .csv formatted data file
-write.csv(Allocationsto2020, file = "Allocationsto2020.csv", row.names = FALSE)
-
-# Create a Windows Excel 2007/10 formatted data file
-write.csv(Allocationsto2020, file = "Allocationsto2020.xls", row.names = FALSE, fileEncoding = "UTF-16LE") 
+# Create a Windows Excel 2007/10 formatted data file (if needed)
+write.csv(Allocations, file = "Allocations.xls", row.names = FALSE, fileEncoding = "UTF-16LE") 
 
 # read back in the new 2010 2020 data if needed
-Allocations <- read.csv("Allocationsto2020.csv") 
+Allocations <- read.csv("Allocations.csv") 
 
 str(Allocations)
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
@@ -148,7 +135,7 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
  $ Allocation: num  210421 47144 3653 4712 948 ...
  $ Value     : num  3699201 828792 64220 82837 16666 ...  
  
- # look at summary of allocations
+ # look at summary of allocations dataframe
  summary(Allocations)
                       Activity                              Applicant   
  Fresh tomatoes           :314   Oji Fibre Solutions (NZ) Limited:  33  
@@ -166,11 +153,10 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
  3rd Qu.:2017   3rd Qu.:   6916   3rd Qu.:   83210  
  Max.   :2020   Max.   :2118983   Max.   :53589080  
  
-# How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for their allocation. 
-# nzal <- filter(Allocationsto2019, Activity == "Aluminium smelting" )
+# How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for their allocation. Create a dataframe.
 nzal <- filter(Allocations, Applicant =="New Zealand Aluminium Smelters Limited") 
 
-# whats that look like?
+# what does that dataframe that look like?
 str(nzal) 
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11 obs. of  5 variables:
  $ Activity  : chr  "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" ...
@@ -185,34 +171,35 @@ nzal <- select(nzal, -Activity, -Applicant)
  $ Year      : int  2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 ...
  $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556 1697437 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
- 
-# 2010 NZUs / final AB = production
-210421 / 2.645 
-[1] 79554.25 tonnes
-> 79554.25 * 2.645
-[1] 210421 
-# what is 2020 most recent year allocation?
+
+# what is the most recent year allocation? It is 2020. 
 tail(nzal,1)
   Year Allocation    Value
 11 2020    1558268 38707377 
 
-# what was 2020 production in tonnes? It is 2020 allocation / final 2020 AB (5.194)
-1558268 / 5.194
-[1] 300013.1
-# what is 2021 provisional allocation? It is 2020 production * provisional AB 
+# How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html Section 81(1) of the Climate Change Response Act 2002. Obtain 2020 final allocation of units and divide by final Allocation Baseline (see Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010 https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production
+1558268 / 5.194 
+[1]  300013.1 tonnes
+
+#What is 2021 provisional allocation? It is 2020 production * provisional AB (5.130) Multiply 2020 actual production by final allocation baseline from Regulation 7.
 300013.1 * 5.130
 [1] 1539067
+
 # what is the market value of the 2021 provisional allocation assuming a mid May 2021 carbon price 37.14 per tonne
 1539067 * 37.14
 [1] 57160948 
 
 # add provisional 2021 allocation to data frame 'nzal'
 nzal <- rbind (nzal,c(2021,1539067,57160948))
+
+# check the dataframe
 str(nzal) 
 'data.frame':	12 obs. of  3 variables:
  $ Year      : num  2010 2011 2012 2013 2014 ...
  $ Allocation: num  210421 437681 301244 1524172 755987 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...   
+
+# What data is there for last year 2021 
 tail(nzal,1) 
    Year Allocation    Value
 12 2021    1539067 57160948 
@@ -220,8 +207,11 @@ tail(nzal,1)
 # Create .csv formatted data file
 write.csv(nzal, file = "nzal.csv", row.names = FALSE)
 
-# Create a Windows Excel 2007/10 formatted data file
+# Create a Windows Excel 2007/10 formatted data file (if needed)
 write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")   
+
+# read my csv data file back into R
+nzal <- read.csv("nzal.csv") 
 
 # How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
 sum(nzal[["Allocation"]])  
@@ -232,7 +222,7 @@ sum(nzal[["Allocation"]])
 sum(nzal[["Value"]])
 [1] 220533810 or 220,533,810 - 220.533810 million $NZD
 
-
+# look at market value for each year
 select(nzal, -Value) 
 # A tibble: 11 x 2
     Year Allocation
@@ -249,20 +239,65 @@ select(nzal, -Value)
 10  2019    1697437
 11  2020    1558268 
 
+# edit the market values into a matrix
 nzalmatrix1 <- matrix(c(210421,437681,301244,1524172,755987,772706,786306,1038914,1324556,1697437,1558268,1539067), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
 
-png("NZAL-2010-2020-560by420.png", bg="white", width=560, height=420,pointsize = 14)
+# create a small .png format chart of the market value of free emission units
+png("NZAL-2010-2020-560by420F11.png", bg="white", width=560, height=420,pointsize = 11)
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
 barplot(nzalmatrix1/10^6,las=1) 
-title(cex.main=1.2,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
-mtext(side=3,line=0.25,cex=0.8,expression(paste("NZ Aluminium Smelters Ltd were given 12 million free emission units from 2010 to 2021")))
-mtext(side=1,line=2.5,cex=0.8,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+title(cex.main=1.4,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
+mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given 12 million free emission units")))
+mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+dev.off()
+# create a .svg format chart of the market value of free emission units
+svg(filename ="NZAL-2010-2020-allocations_720-540font11.svg", width = 8, height = 6, pointsize = 11, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
+barplot(nzalmatrix1/10^6,las=1) 
+title(cex.main=1.4,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
+mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given 12 million free emission units")))
+mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 
-svg(filename ="NZAL-2010-2020-allocations_720-540.svg", width = 8, height = 6, pointsize = 14, onefile = FALSE, family = "sans", bg = "white")
+# just select the value of NZALs allocations of emissions units
+select(nzal, Value) 
+      Value
+1   3699201
+2   8683591
+3   1876750
+4   2956894
+5   3084427
+6   4126250
+7  11503657
+8  17619981
+9  28186552
+10 42928182
+11 38707377
+12 57160948  
+# edit them into matrix for use in a barplot 
+
+nzalmatrix2 <- matrix(c(3699201,8683591,1876750,2956894,3084427,4126250,11503657,17619981,28186552,42928182,38707377,57160948), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
+# check matrix 
+nzalmatrix2 
+        2010    2011    2012    2013    2014    2015     2016     2017
+Units 3699201 8683591 1876750 2956894 3084427 4126250 11503657 17619981
+          2018     2019     2020     2021
+Units 28186552 42928182 38707377 57160948 
+
+# create small .png chart
+png("NZAL-allocation-value-560by420f12.png", bg="white", width=560, height=420,pointsize = 11)
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
-barplot(nzalmatrix1/10^6,las=1) 
-title(cex.main=1.2,main="NZETS Emission Units Allocated to NZ Aluminium Smelters Ltd",ylab="NZ Units (millions)")
-mtext(side=3,line=0.25,cex=0.8,expression(paste("NZ Aluminium Smelters Ltd were given 12 million free emission units from 2010 to 2021")))
-mtext(side=1,line=2.5,cex=0.8,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+barplot(nzalmatrix2/10^6,las=1) 
+title(cex.main=1.3,main="NZ Aluminium Smelters Ltd Value of Allocated Emission Units",ylab="$NZD million")
+mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given free emission units worth $220 million")))
+mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+dev.off()
+
+# create slightly larger .svg format chart
+svg(filename ="NZAL-allocation-value-720-540f12.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
+barplot(nzalmatrix2/10^6,las=1) 
+title(cex.main=1.4,main="NZ Aluminium Smelters Ltd Value of Allocated Emission Units",ylab="$NZD million")
+mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given free emission units worth $220 million")))
+mtext(side=1,line=2.5,cex=0.9,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
