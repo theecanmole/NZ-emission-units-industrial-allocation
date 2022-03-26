@@ -713,3 +713,53 @@ On branch master
 Your branch is up-to-date with 'origin/master'.
 nothing to commit, working tree clean
 user@mx3:~/R/eur/2010to2018
+
+git add Readme.md Sum-allocation-2010-2018.r
+
+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
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working tree clean
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Readme.md
+	deleted:    Sum-allocation-2010-2018.html
+	modified:   Sum-allocation-2010-2018.r
+	modified:   git-commands-history.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git rm Sum-allocation-2010-2018.html
+rm 'Sum-allocation-2010-2018.html'
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md Sum-allocation-2010-2018.r
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master eb0283f] update
+ 4 files changed, 518 insertions(+), 412 deletions(-)
+ rewrite Readme.md (63%)
+ delete mode 100644 Sum-allocation-2010-2018.html
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 	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
+Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 6.33 KiB | 0 bytes/s, done.
+Total 5 (delta 3), reused 0 (delta 0)
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   29f5fd2..eb0283f  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master

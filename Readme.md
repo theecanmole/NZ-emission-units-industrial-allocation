@@ -1,4 +1,4 @@
-## Industrial Allocation of New Zealand Emission Units to Industry under the New Zealand Emissions Trading Scheme 2010 to 2018. 
+## Industrial allocation of New Zealand Emission Units to industry under the New Zealand Emissions Trading Scheme. 
 
 ### Description
 
@@ -6,13 +6,13 @@ The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) ma
 
 Emissions units are allocated (gifted for no cost) to [participant emitting industries](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industries-in-the-emissions-trading-scheme/) each calendar year. This is the annual [Industrial Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emissions units to emitting industries.
     
-The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) publishes the final industrial allocation of emission units annually on it's [website](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/)
+The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) (EPA) publishes the final industrial allocation of emission units annually on it's [website](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/)
 
 This data repository provides a reproducible exploration of the free/industrial allocation of New Zealand emission units to New Zealand Aluminium Smelter Limited.
 
-[Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) If you apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment.
+[EPA Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) If you Apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment.
 
-[Deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs.
+[EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs.
 
 [Industry final allocations to 2020 MS Excel workbook](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
 
@@ -156,6 +156,7 @@ read back in the new 2010 2020 data if needed
 ```{r}
 Allocations <- read.csv("Allocations.csv") 
 ```
+check the Allocations dataframe
 ```{r}
 str(Allocations)
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
@@ -184,7 +185,7 @@ summary(Allocations)
  3rd Qu.:2017   3rd Qu.:   6916   3rd Qu.:   83210  
  Max.   :2020   Max.   :2118983   Max.   :53589080  
 ``` 
-How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for their allocation. Create a dataframe.
+how many emission units were given to  New Zealand Aluminium Smelters Limited? filter the data for their allocations, create a dataframe.
 ```{r}
 nzal <- filter(Allocations, Applicant =="New Zealand Aluminium Smelters Limited") 
 ```
@@ -198,7 +199,7 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11 obs. of  5 variables:
  $ Allocation: num  210421 437681 301244 1524172 755987 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
 ```
-filter out redundant columns to leave year allocation and value
+filter out redundant columns to leave year, allocation and value
 ```{r}
 nzal <- select(nzal, -Activity, -Applicant)
 'data.frame':	11 obs. of  3 variables:
@@ -206,18 +207,18 @@ nzal <- select(nzal, -Activity, -Applicant)
  $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556 1697437 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
 ```
-what is the most recent year allocation? It is 2020. 
+what is the most recent year allocation? it is 2020. 
 ```{r}
 tail(nzal,1)
   Year Allocation    Value
 11 2020    1558268 38707377 
 ```
-How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html Section 81(1) of the Climate Change Response Act 2002. Obtain 2020 final allocation of units and divide by final Allocation Baseline (see Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010 https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production
+How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see [Section 81(1) of the Climate Change Response Act 2002](https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html). Obtain 2020 final allocation of units and divide by final Allocation Baseline, see [Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010](https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production
 ```{r}
 1558268 / 5.194 
 [1]  300013.1
 ```
-What is 2021 provisional allocation? It is 2020 production * provisional AB (5.130) Multiply 2020 actual production by final allocation baseline from Regulation 7.
+what is 2021 provisional allocation? It is 2020 production * provisional AB (5.130) Multiply 2020 actual production by final allocation baseline from Regulation 7.
 ```{r}
 300013.1 * 5.130
 [1] 1539067
@@ -227,7 +228,7 @@ what is the market value of the 2021 provisional allocation assuming a mid May 2
 1539067 * 37.14
 [1] 57160948 
 ```
-add provisional 2021 allocation to data frame 'nzal'
+add provisional 2021 allocation to data frame
 ```{r}
 nzal <- rbind (nzal,c(2021,1539067,57160948))
 ```
@@ -261,7 +262,7 @@ how many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
 ```
 11,946,759 or 11.946759 million emission units  or call it 12 million
 
-What was the market value of the emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited each year?
+what was the market value of the emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited each year?
 ```{r}
 sum(nzal[["Value"]])
 [1] 220533810 or 220,533,810 - 220.533810 million $NZD
