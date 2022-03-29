@@ -763,3 +763,23 @@ Branch master set up to track remote branch master from origin.
 user@mx3:~/R/eur/2010to2018
 $ git status
 On branch master
+OLD
+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
+new
+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
+
+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
+
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+remote: Permission to theecanmole/NZ-emission-units-industrial-allocation.git denied to theecanmole.
+fatal: unable to access 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/': The requested URL returned error: 403
+
+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
+
+str(Allocations)
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1129 obs. of  4 variables:
+ $ Activity        : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
+ $ Applicant’s name: chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
+ $ Year            : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
+ $ Final Allocation: num  210421 47144 3653 4712 948 ...   

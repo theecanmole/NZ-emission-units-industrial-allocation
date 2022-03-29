@@ -6,15 +6,15 @@ The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) ma
 
 Emissions units are allocated (gifted for no cost) to [participant emitting industries](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industries-in-the-emissions-trading-scheme/) each calendar year. This is the annual [Industrial Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emissions units to emitting industries.
     
-The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) (EPA) publishes the final industrial allocation of emission units annually on it's [website](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/)
+The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) (EPA) publishes the final industrial allocation of emission units annually on it's website [Industrial allocations decisions](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/)
 
-This data repository provides a reproducible exploration of the free/industrial allocation of New Zealand emission units to New Zealand Aluminium Smelter Limited.
+The EPA website states at; [EPA Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) "If you Apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment".
 
-[EPA Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) If you Apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment.
+The EPA website states at; [EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) "You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs".
 
-[EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs.
+The EPA website also discloses a complete record of all industry final allocations to 2021 in a MS Excel workbook [Industrial-Allocations-Final-Decisions.xlsx](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
 
-[Industry final allocations to 2020 MS Excel workbook](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
+This data repository is a reproducible exploration of the free industrial allocation of New Zealand emission units to New Zealand Aluminium Smelters Limited.
 
 ### Data Preparation
 
@@ -26,7 +26,7 @@ Data preparation was performed with [R version 3.6.0](https://cran.r-project.org
 
 Follow the steps in the R script file Sum-allocation-2010-2018.r
 
-load packages 
+Load packages 
 ```{r}
 library(readxl)
 library(dplyr)
@@ -35,59 +35,46 @@ library(tidyr)
 ```
 check the working directory and set if necessary
 ```{r}
-setwd("/2010t02018")
+setwd("/folder")
 getwd()
-[1] "/2010to2018"
 ```
-obtain emission unit allocation to industry data from EPA
+Obtain the Excel workbook of the emission unit allocation to industry data from the EPA
 ```{r}
 download.file("https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx", "Industrial-Allocations-Final-Decisions.xlsx") 
 ```
 check how many worksheets
 ```{r}
 excel_sheets("Industrial-Allocations-Final-Decisions.xlsx")
+```
+```{r}
 [1] "IA Final Decisions"
 ```
 read in the sheet of allocation
 ```{r}
 Allocations <- read_excel("Industrial-Allocations-Final-Decisions.xlsx", sheet = "IA Final Decisions",skip=3)
 ```
-check the consistency of column/variable names
+Check the consistency of column/variable names
 ```{r}
 str(Allocations)
+```
+```{r}
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1129 obs. of  4 variables:
  $ Activity        : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
  $ Applicant’s name: chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
  $ Year            : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
  $ Final Allocation: num  210421 47144 3653 4712 948 ...   
 ```
-revise and shorten column names
+Revise and shorten the column names
 ```{r}
 colnames(Allocations) <- c("Activity", "Applicant", "Year", "Allocation")
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  4 variables:
- $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num  210421 47144 3653 4712 948 ...  
 ```
-what is most recent year? 
+What is the most recent year? 
 ```{r}
 max(Allocations[["Year"]])
-[1] 2020  
 ```
-filter by year
-```{r}
-head(filter(Allocations, Year == "2010" ))
-A tibble: 6 x 4
-  Activity           Applicant                                 Year Allocation
-  <chr>              <chr>                                    <dbl>      <dbl>
-1 Aluminium smelting New Zealand Aluminium Smelters Limited    2010     210421
-2 Burnt lime         Graymont (NZ) Limited                     2010      47144
-3 Burnt lime         Holcim (New Zealand) Limited              2010       3653
-4 Burnt lime         Perry Resources (2008) Ltd                2010       4712
-5 Burnt lime         Websters Hydrated Lime Company Limited    2010        948
+```{r}[1] 2020  
 ```
-separate the allocation data into years
+Separate the allocation data into years
 ```{r}
 nzu2010 <- filter(Allocations, Year =="2010")
 nzu2011 <- filter(Allocations, Year =="2011")
@@ -101,18 +88,8 @@ nzu2018 <- filter(Allocations, Year =="2018")
 nzu2019 <- filter(Allocations, Year =="2019") 
 nzu2020 <- filter(Allocations, Year =="2020")  
 ```
-check just the 2010 data
-```{r}
-str(nzu2010)
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	141 obs. of  4 variables:
- $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num  210421 47144 3653 4712 948 ...   
-``` 
-Each year, from May, the EPA makes a 'provisional' allocation of emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu
-The NZU repository has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328
-I will add a NZU market price value at the May average price from 2010 to 2019 
+ 
+Each year, from 1 May, the EPA makes a 'provisional' allocation of emssion units to selected industries. See https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu This data set has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328. I add a NZU market price at the May average price from 2010 to 2019 to the annual allocation data. 
 ```{r}
 nzu2010[["Value"]] <- nzu2010[["Allocation"]]*17.58
 nzu2011[["Value"]] <- nzu2011[["Allocation"]]*19.84
@@ -126,29 +103,26 @@ nzu2018[["Value"]] <- nzu2018[["Allocation"]]*21.28
 nzu2019[["Value"]] <- nzu2019[["Allocation"]]*25.29 
 nzu2020[["Value"]] <- nzu2020[["Allocation"]]*24.84
 ```
-combine all year data together into 1 dataframe - I use rbind as all the column names are consistent
+Combine all year data together into 1 dataframe - I use rbind as all the column names are consistent
 ```{r}
 Allocations <- rbind(nzu2010,nzu2011,nzu2012,nzu2013,nzu2014,nzu2015,nzu2016,nzu2017,nzu2018,nzu2019,nzu2020)
 ```
-check the new dataframe
+Check the new dataframe
 ```{r}
 str(Allocations)
+```
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
  $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
  $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
  $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
  $ Allocation: num  210421 47144 3653 4712 948 ...
  $ Value     : num  3699201 828792 64220 82837 16666 ...  
-``` 
-read my csv data file back into R if needed
-```{r}
-Allocations <- read.csv("Allocations.csv") 
-```
-create a .csv formatted data file
+ 
+Create a .csv formatted data file
 ```{r}
 write.csv(Allocations, file = "Allocations.csv", row.names = FALSE)
 ```
-create a Windows Excel 2007/10 formatted data file (if needed)
+Or create a Windows Excel 2007/10 formatted data file (if needed)
 ```{r}
 write.csv(Allocations, file = "Allocations.xls", row.names = FALSE, fileEncoding = "UTF-16LE") 
 ```
@@ -159,16 +133,13 @@ Allocations <- read.csv("Allocations.csv")
 check the Allocations dataframe
 ```{r}
 str(Allocations)
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
- $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num  210421 47144 3653 4712 948 ...
- $ Value     : num  3699201 828792 64220 82837 16666 ...  
-``` 
-look at summary of allocations dataframe
+```
+
+Look at a summary of the allocations dataframe
 ```{r}
 summary(Allocations)
+```
+```{r}
                       Activity                              Applicant   
  Fresh tomatoes           :314   Oji Fibre Solutions (NZ) Limited:  33  
  Protein meal             :180   Under Glass (Bombay) Ltd        :  28  
@@ -185,13 +156,15 @@ summary(Allocations)
  3rd Qu.:2017   3rd Qu.:   6916   3rd Qu.:   83210  
  Max.   :2020   Max.   :2118983   Max.   :53589080  
 ``` 
-how many emission units were given to  New Zealand Aluminium Smelters Limited? filter the data for their allocations, create a dataframe.
+How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for the aluminium smelter allocations, and create a dataframe.
 ```{r}
 nzal <- filter(Allocations, Applicant =="New Zealand Aluminium Smelters Limited") 
 ```
-what does that dataframe that look like?
+What does that dataframe that look like?
 ```{r}
 str(nzal) 
+```
+```{r}
 Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11 obs. of  5 variables:
  $ Activity  : chr  "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" ...
  $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" ...
@@ -199,42 +172,49 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11 obs. of  5 variables:
  $ Allocation: num  210421 437681 301244 1524172 755987 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
 ```
-filter out redundant columns to leave year, allocation and value
+Filter out redundant columns to leave year, allocation and value
 ```{r}
 nzal <- select(nzal, -Activity, -Applicant)
+```
+```{r}
 'data.frame':	11 obs. of  3 variables:
  $ Year      : int  2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 ...
  $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556 1697437 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
 ```
-what is the most recent year allocation? it is 2020. 
+What is the most recent year allocation? it is 2020. 
 ```{r}
 tail(nzal,1)
+```
+```{r}
   Year Allocation    Value
 11 2020    1558268 38707377 
 ```
-How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see [Section 81(1) of the Climate Change Response Act 2002](https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html). Obtain 2020 final allocation of units and divide by final Allocation Baseline, see [Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010](https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production
+How do I estimate the 2021 provisional allocation that was probably processed by EPA in May 2021? It is based on prior year 2020 actual production see [Section 81(1) of the Climate Change Response Act 2002](https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html). So obtain the 2020 final allocation of units and divide by 2020 final allocation baseline from [Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010](https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html). The final 2020 allocation of units multiplied by the 2021 allocation baseline equals the 2021 provisional allocation. 
 ```{r}
 1558268 / 5.194 
-[1]  300013.1
 ```
-what is 2021 provisional allocation? It is 2020 production * provisional AB (5.130) Multiply 2020 actual production by final allocation baseline from Regulation 7.
+```{r}[1]  300013.1
+```
 ```{r}
 300013.1 * 5.130
+```{r}
 [1] 1539067
 ```
-what is the market value of the 2021 provisional allocation assuming a mid May 2021 carbon price 37.14 per tonne
+What is the market value of the 2021 provisional allocation assuming a mid May 2021 carbon price 37.14 per tonne
 ```{r}
 1539067 * 37.14
-[1] 57160948 
+```[1] 57160948 
 ```
-add provisional 2021 allocation to data frame
+Add the estimated provisional 2021 allocation and May market value to the data frame
 ```{r}
 nzal <- rbind (nzal,c(2021,1539067,57160948))
 ```
-check the dataframe
+Check the dataframe
 ```{r}
 str(nzal) 
+```
+```{r}
 'data.frame':	12 obs. of  3 variables:
  $ Year      : num  2010 2011 2012 2013 2014 ...
  $ Allocation: num  210421 437681 301244 1524172 755987 ...
@@ -243,33 +223,41 @@ str(nzal)
 What data is there for last year 2021
 ```{r}
 tail(nzal,1) 
+```
+```{r}
    Year Allocation    Value
 12 2021    1539067 57160948 
 ```
-create .csv formatted data file
+Create .csv formatted data file
 ```{r}
 write.csv(nzal, file = "nzal.csv", row.names = FALSE)
 ```
-create a Windows Excel 2007/10 formatted data file (if needed)
+Create a Windows Excel 2007/10 formatted data file (if needed)
 ```{r}write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")   
 ```
-read my csv data file back into R
+Read the csv data file back into R if needed later
 ```{r}nzal <- read.csv("nzal.csv") 
 ```
-how many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
+How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
 ```{r}sum(nzal[["Allocation"]])  
+```
+```{r}
 [1] 11946759
 ```
-11,946,759 or 11.946759 million emission units  or call it 12 million
+So 11,946,759 or 11.946759 million or call it 12 million emission units have been given to New Zealand Aluminium Smelters Limited 
 
-what was the market value of the emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited each year?
+What was the market value of the all emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited from 2010 to 2021?
 ```{r}
 sum(nzal[["Value"]])
+```
+```{r}
 [1] 220533810 or 220,533,810 - 220.533810 million $NZD
 ```
-look at market value for each year
+View the market value for each year
 ```{r}
 select(nzal, -Value) 
+```
+```{r}
 A tibble: 11 x 2
     Year Allocation
    <dbl>      <dbl>
@@ -285,11 +273,11 @@ A tibble: 11 x 2
 10  2019    1697437
 11  2020    1558268 
 ```
-edit the values into a matrix
+Edit the values into a matrix
 ```{r}
 nzalmatrix1 <- matrix(c(210421,437681,301244,1524172,755987,772706,786306,1038914,1324556,1697437,1558268,1539067), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
 ```
-create a small .png format chart of the annual allocations of free emission units
+Create a small .png format chart of the annual allocations of free emission units
 ```{r}
 png("NZAL-2010-2020-560by420F11.png", bg="white", width=560, height=420,pointsize = 11)
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
@@ -299,7 +287,7 @@ mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Sm
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```
-create a .svg format chart of the annual allocations of free emission units
+Create a .svg format chart of the annual allocations of free emission units
 ```{r}
 svg(filename ="NZAL-2010-2020-allocations_720-540font11.svg", width = 8, height = 6, pointsize = 11, onefile = FALSE, family = "sans", bg = "white")
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
@@ -309,7 +297,7 @@ mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Sm
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```
-just select the value of NZALs allocations of emissions units
+Select only the market values of NZ Aluminium Smelters Limited allocations of emissions units
 ```{r}
 select(nzal, Value) 
       Value
@@ -326,18 +314,21 @@ select(nzal, Value)
 11 38707377
 12 57160948  
 ```
-edit them into matrix for use in a barplot 
+Edit them into matrix for use in a barplot 
 ```{r}
 nzalmatrix2 <- matrix(c(3699201,8683591,1876750,2956894,3084427,4126250,11503657,17619981,28186552,42928182,38707377,57160948), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
-check matrix 
+```
+Check the matrix 
 ```{r}
-nzalmatrix2 
+nzalmatrix2
+``` 
+```{r}
         2010    2011    2012    2013    2014    2015     2016     2017
 Units 3699201 8683591 1876750 2956894 3084427 4126250 11503657 17619981
           2018     2019     2020     2021
 Units 28186552 42928182 38707377 57160948 
 ```
-create a small .png chart
+Create a small .png chart
 ```{r}
 png("NZAL-allocation-value-560by420f12.png", bg="white", width=560, height=420,pointsize = 11)
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
@@ -347,7 +338,7 @@ mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Sm
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```
-create slightly larger .svg format chart
+Create slightly larger .svg format chart
 ```{r}
 svg(filename ="NZAL-allocation-value-720-540f12.svg", width = 8, height = 6, pointsize = 12, onefile = FALSE, family = "sans", bg = "white")
 par(mar=c(4.4, 4.4, 4.4, 2)+0.1)

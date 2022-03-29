@@ -277,7 +277,8 @@ select(nzal, Value)
 12 57160948  
 # edit them into matrix for use in a barplot 
 
-nzalmatrix2 <- matrix(c(3699201,8683591,1876750,2956894,3084427,4126250,11503657,17619981,28186552,42928182,38707377,57160948), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
+nzalmatrix2 <- matrix(c(3699201,8683591,1876750,2956894,3084427,4126250,11503657,17619981,28186552,42928182,38707377,57160948), 
+nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
 # check matrix 
 nzalmatrix2 
         2010    2011    2012    2013    2014    2015     2016     2017
@@ -301,4 +302,18 @@ barplot(nzalmatrix2/10^6,las=1)
 title(cex.main=1.4,main="NZ Aluminium Smelters Ltd Value of Allocated Emission Units",ylab="$NZD million")
 mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Smelters Ltd were given free emission units worth $220 million")))
 mtext(side=1,line=2.5,cex=0.9,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
+dev.off()
+
+nzalmatrix4 <- matrix(c(5.13,2.12), nrow = 1, ncol=2, byrow=TRUE,dimnames = list(c("Units"), c("2021 Provisional Allocative Baseline","2021 Final Allocative Baseline")))
+
+nzalmatrix4
+      Provisional Final
+Units        5.13  2.12
+
+svg(filename ="NZAL-allocation-baseline2021-720-540.svg", width = 8, height = 6, pointsize = 11, onefile = FALSE, family = "sans", bg = "white")
+par(mar=c(4.4, 4.4, 4.4, 2)+0.1)
+barplot(nzalmatrix4,las=1)
+title(cex.main=1.4,main="NZ Aluminium Smelters Ltd provisional and final allocative baselines",ylab="NZ Units per tonne aluminium produced")
+mtext(side=3,line=0.25,cex=1,expression(paste("The 2021 final allocative baseline excludes electricity and is half of the provisional baseline")))
+mtext(side=1,line=2.5,cex=1,expression(paste("Data: Climate Change (Eligible Industrial Activities) Regulations 2010")))
 dev.off()
