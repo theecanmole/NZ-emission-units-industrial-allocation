@@ -111,13 +111,6 @@ Check the new dataframe
 ```{r}
 str(Allocations)
 ```
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  5 variables:
- $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num  210421 47144 3653 4712 948 ...
- $ Value     : num  3699201 828792 64220 82837 16666 ...  
- 
 Create a .csv formatted data file
 ```{r}
 write.csv(Allocations, file = "Allocations.csv", row.names = FALSE)
@@ -130,11 +123,6 @@ read back in the new 2010 2020 data if needed
 ```{r}
 Allocations <- read.csv("Allocations.csv") 
 ```
-check the Allocations dataframe
-```{r}
-str(Allocations)
-```
-
 Look at a summary of the allocations dataframe
 ```{r}
 summary(Allocations)

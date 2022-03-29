@@ -783,3 +783,51 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1129 obs. of  4 variables:
  $ Applicant’s name: chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
  $ Year            : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
  $ Final Allocation: num  210421 47144 3653 4712 948 ...   
+
+
+Mar 29, 2022, 18:12:49
+user@mx3:~
+$ cd /home/user/R/eur/2010to2018/
+user@mx3:~/R/eur/2010to2018
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   Readme.md
+	modified:   Sum-allocation-2010-2018.r
+	modified:   git-commands-history.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+user@mx3:~/R/eur/2010to2018
+$ git add Readme.md Sum-allocation-2010-2018.r
+user@mx3:~/R/eur/2010to2018
+$ git commit -a
+[master 7622a8d] update
+ 3 files changed, 113 insertions(+), 87 deletions(-)
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com':   
+Password for 'https://github.com': 
+remote: No anonymous write access.
+fatal: Authentication failed for 'https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git/'
+user@mx3:~/R/eur/2010to2018
+$ git push -u origin master
+Username for 'https://github.com': theecanmole
+Password for 'https://theecanmole@github.com': 
+Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (5/5), 2.23 KiB | 0 bytes/s, done.
+Total 5 (delta 4), reused 0 (delta 0)
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+To https://github.com/theecanmole/NZ-emission-units-industrial-allocation.git
+   8d2e583..7622a8d  master -> master
+Branch master set up to track remote branch master from origin.
+user@mx3:~/R/eur/2010to2018
+
+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
+
+==============================================
