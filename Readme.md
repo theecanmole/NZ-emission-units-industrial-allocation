@@ -82,7 +82,7 @@ nzu2018 <- filter(Allocations, Year =="2018")
 nzu2019 <- filter(Allocations, Year =="2019") 
 nzu2020 <- filter(Allocations, Year =="2020")  
 ```
-Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2019 to the annual allocation data. 
+Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2020 to the annual allocation data. 
 ```{r}
 nzu2010[["Value"]] <- nzu2010[["Allocation"]]*17.58
 nzu2011[["Value"]] <- nzu2011[["Allocation"]]*19.84
@@ -180,6 +180,7 @@ How do I estimate the 2021 provisional allocation that was probably processed by
 ```
 ```{r}
 300013.1 * 5.130
+```
 ```{r}
 [1] 1539067
 ```
@@ -215,10 +216,12 @@ Create .csv formatted data file
 write.csv(nzal, file = "nzal.csv", row.names = FALSE)
 ```
 Create a Windows Excel 2007/10 formatted data file (if needed)
-```{r}write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")   
+```{r}
+write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")   
 ```
 Read the csv data file back into R if needed later
-```{r}nzal <- read.csv("nzal.csv") 
+```{r}
+nzal <- read.csv("nzal.csv") 
 ```
 How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
 ```{r}
