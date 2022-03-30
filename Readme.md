@@ -49,7 +49,7 @@ excel_sheets("Industrial-Allocations-Final-Decisions.xlsx")
 ```{r}
 [1] "IA Final Decisions"
 ```
-read in the sheet of allocation
+read in the sheet of unit allocations
 ```{r}
 Allocations <- read_excel("Industrial-Allocations-Final-Decisions.xlsx", sheet = "IA Final Decisions",skip=3)
 ```
@@ -68,12 +68,6 @@ Revise and shorten the column names
 ```{r}
 colnames(Allocations) <- c("Activity", "Applicant", "Year", "Allocation")
 ```
-What is the most recent year? 
-```{r}
-max(Allocations[["Year"]])
-```
-```{r}[1] 2020  
-```
 Separate the allocation data into years
 ```{r}
 nzu2010 <- filter(Allocations, Year =="2010")
@@ -88,8 +82,7 @@ nzu2018 <- filter(Allocations, Year =="2018")
 nzu2019 <- filter(Allocations, Year =="2019") 
 nzu2020 <- filter(Allocations, Year =="2020")  
 ```
- 
-Each year, from 1 May, the EPA makes a 'provisional' allocation of emssion units to selected industries. See https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu This data set has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328. I add a NZU market price at the May average price from 2010 to 2019 to the annual allocation data. 
+Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2019 to the annual allocation data. 
 ```{r}
 nzu2010[["Value"]] <- nzu2010[["Allocation"]]*17.58
 nzu2011[["Value"]] <- nzu2011[["Allocation"]]*19.84
@@ -182,7 +175,8 @@ How do I estimate the 2021 provisional allocation that was probably processed by
 ```{r}
 1558268 / 5.194 
 ```
-```{r}[1]  300013.1
+```{r}
+[1]  300013.1
 ```
 ```{r}
 300013.1 * 5.130
@@ -192,7 +186,7 @@ How do I estimate the 2021 provisional allocation that was probably processed by
 What is the market value of the 2021 provisional allocation assuming a mid May 2021 carbon price 37.14 per tonne
 ```{r}
 1539067 * 37.14
-```[1] 57160948 
+[1] 57160948 
 ```
 Add the estimated provisional 2021 allocation and May market value to the data frame
 ```{r}
@@ -227,7 +221,8 @@ Read the csv data file back into R if needed later
 ```{r}nzal <- read.csv("nzal.csv") 
 ```
 How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
-```{r}sum(nzal[["Allocation"]])  
+```{r}
+sum(nzal[["Allocation"]])  
 ```
 ```{r}
 [1] 11946759
@@ -239,9 +234,11 @@ What was the market value of the all emission units (based on mid May market pri
 sum(nzal[["Value"]])
 ```
 ```{r}
-[1] 220533810 or 220,533,810 - 220.533810 million $NZD
+[1] 220533810
 ```
-View the market value for each year
+The total market value is $220,533,810 or $220.533810 million $NZD
+
+Look at the unit allocations for each year
 ```{r}
 select(nzal, -Value) 
 ```
@@ -261,7 +258,7 @@ A tibble: 11 x 2
 10  2019    1697437
 11  2020    1558268 
 ```
-Edit the values into a matrix
+Edit the unit allocations into a matrix
 ```{r}
 nzalmatrix1 <- matrix(c(210421,437681,301244,1524172,755987,772706,786306,1038914,1324556,1697437,1558268,1539067), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
 ```
@@ -285,7 +282,7 @@ mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Sm
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 ```
-Select only the market values of NZ Aluminium Smelters Limited allocations of emissions units
+Select only the market values of NZ Aluminium Smelters Limited's allocations of emissions units
 ```{r}
 select(nzal, Value) 
       Value

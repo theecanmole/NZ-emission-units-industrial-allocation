@@ -172,7 +172,7 @@ nzal <- select(nzal, -Activity, -Applicant)
  $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556 1697437 ...
  $ Value     : num  3699201 8683591 1876750 2956894 3084427 ...  
 
-# what is the most recent year allocation? It is 2020. 
+# what is the most recent year of allocation? It is 2020. 
 tail(nzal,1)
   Year Allocation    Value
 11 2020    1558268 38707377 
@@ -222,7 +222,7 @@ sum(nzal[["Allocation"]])
 sum(nzal[["Value"]])
 [1] 220533810 or 220,533,810 - 220.533810 million $NZD
 
-# look at market value for each year
+# look at the unit allocations for each year
 select(nzal, -Value) 
 # A tibble: 11 x 2
     Year Allocation
@@ -239,7 +239,7 @@ select(nzal, -Value)
 10  2019    1697437
 11  2020    1558268 
 
-# edit the market values into a matrix
+# edit the unit allocations into a matrix
 nzalmatrix1 <- matrix(c(210421,437681,301244,1524172,755987,772706,786306,1038914,1324556,1697437,1558268,1539067), nrow = 1, ncol=12, byrow=TRUE, dimnames = list(c("Units"), c("2010", "2011", "2012","2013","2014","2015","2016","2017","2018","2019","2020","2021")))
 
 # create a small .png format chart of the market value of free emission units
@@ -260,7 +260,7 @@ mtext(side=3,line=0.25,cex=1,expression(paste("From 2010 to 2021 NZ Aluminium Sm
 mtext(side=1,line=2.5,cex=1,expression(paste("Data: https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/")))
 dev.off()
 
-# just select the value of NZALs allocations of emissions units
+# just select the market values of NZALs allocations of emissions units
 select(nzal, Value) 
       Value
 1   3699201
