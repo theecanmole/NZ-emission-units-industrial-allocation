@@ -53,7 +53,72 @@ Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1207 obs. of  4 variables:
 
 # what is most recent year? 
 max(Allocations[["Year"]])
-[1] 2020  
+[1] 2020
+
+# filter by Applicant 
+filter(Allocations, Applicant == "Southern Paprika Limited" )
+southernpaprikalimited <- filter(Allocations, Applicant == "Southern Paprika Limited" )
+# check new dataframe
+str(southernpaprikalimited)
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	11 obs. of  4 variables:
+ $ Activity  : chr  "Fresh capsicums" "Fresh capsicums" "Fresh capsicums" "Fresh capsicums" ...
+ $ Applicant : chr  "Southern Paprika Limited" "Southern Paprika Limited" "Southern Paprika Limited" "Southern Paprika Limited" ...
+ $ Year      : num  2010 2011 2012 2013 2014 ...
+ $ Allocation: num  2148 4216 4998 5298 6351 ... 
+# how many free emissions units were they given over 2010 to 2020?
+sum(southernpaprikalimited[["Allocation"]]) 
+[1] 83061 
+
+max(southernpaprikalimited[["Allocation"]])
+[1] 14233
+tail(southernpaprikalimited[["Allocation"]],1)
+[1] 14233
+# how many free emissions units were they given in 2020?
+tail(southernpaprikalimited,1)
+# A tibble: 1 x 4
+  Activity        Applicant                 Year Allocation
+  <chr>           <chr>                    <dbl>      <dbl>
+1 Fresh capsicums Southern Paprika Limited  2020      14233 
+# what was the market value of the emissions units gifted at May 2020 price 24.84?
+14233 * 24.84
+[1] 353547.7
+
+filter(Allocations, Applicant == "Blue Sky Meats (N.Z.) Limited" )
+blueskymeats <- filter(Allocations, Applicant == "Blue Sky Meats (N.Z.) Limited" )
+# How many units given from 2010 to 2020?
+sum(blueskymeats[["Allocation"]]) 
+[1] 6134 
+# how many free emissions units were they given in 2020?
+tail(blueskymeats,1)
+# A tibble: 1 x 4
+  Activity     Applicant                      Year Allocation
+  <chr>        <chr>                         <dbl>      <dbl>
+1 Protein meal Blue Sky Meats (N.Z.) Limited  2020       1122
+
+filter(Allocations, Applicant == "Gourmet Paprika Limited" )
+gourmetpaprikalimited <- filter(Allocations, Applicant == "Gourmet Paprika Limited" )
+# How many units given from 2010 to 2020?
+sum(gourmetpaprikalimited[["Allocation"]]) 
+[1] 43962 
+# how many free emissions units were they given in 2020?
+tail(gourmetpaprikalimited,1)
+# A tibble: 1 x 4
+  Activity        Applicant                Year Allocation
+  <chr>           <chr>                   <dbl>      <dbl>
+1 Fresh capsicums Gourmet Paprika Limited  2020       6909 
+
+# make new data of all three
+gidiroundthree <- rbind(southernpaprikalimited,blueskymeats,gourmetpaprikalimited)
+str(gidiroundthree) 
+Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	33 obs. of  4 variables:
+ $ Activity  : chr  "Fresh capsicums" "Fresh capsicums" "Fresh capsicums" "Fresh capsicums" ...
+ $ Applicant : chr  "Southern Paprika Limited" "Southern Paprika Limited" "Southern Paprika Limited" "Southern Paprika Limited" ...
+ $ Year      : num  2010 2011 2012 2013 2014 ...
+ $ Allocation: num  2148 4216 4998 5298 6351 ...  
+ 
+# Create a .csv formatted data file
+write.csv(gidiroundthree, file = "gidiroundthree.csv", row.names = FALSE)
+
 
 # filter by year
 head(filter(Allocations, Year == "2010" ))
@@ -212,6 +277,28 @@ write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")
 
 # read my csv data file back into R
 nzal <- read.csv("nzal.csv") 
+dput(nzal) 
+structure(list(Year = 2010:2021, Allocation = c(210421L, 437681L, 
+301244L, 1524172L, 755987L, 772706L, 786306L, 1038914L, 1324556L, 
+1697437L, 1558268L, 1539067L), Value = c(3699201.18, 8683591.04, 
+1876750.12, 2956893.68, 3084426.96, 4126250.04, 11503656.78, 
+17619981.44, 28186551.68, 42928181.73, 38707377.12, 57160948)), class = "data.frame", row.names = c(NA, 
+-12L))
+# or
+nzallist <- structure(list(Year = 2010:2021, Allocation = c(210421L, 437681L, 
+301244L, 1524172L, 755987L, 772706L, 786306L, 1038914L, 1324556L, 
+1697437L, 1558268L, 1539067L), Value = c(3699201.18, 8683591.04, 
+1876750.12, 2956893.68, 3084426.96, 4126250.04, 11503656.78, 
+17619981.44, 28186551.68, 42928181.73, 38707377.12, 57160948)), class = "data.frame", row.names = c(NA, 
+-12L))
+
+str(nzallist) 
+'data.frame':	12 obs. of  3 variables:
+ $ Year      : int  2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 ...
+ $ Allocation: int  210421 437681 301244 1524172 755987 772706 786306 1038914 1324556 1697437 ...
+ $ Value     : num  3699201 8683591 1876750 2956894 3084427 
+dump("nzal", file = "nzaldumpdata.R", append = FALSE,control = "all", envir = parent.frame(), evaluate = TRUE)
+save.image() 
 
 # How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
 sum(nzal[["Allocation"]])  
