@@ -260,11 +260,8 @@ nzal
 # Create .csv formatted data file
 write.csv(nzal, file = "nzal.csv", row.names = FALSE)
 
-# Create a Windows Excel 2007/10 formatted data file (if needed)
-write.csv(nzal, file = "nzal.xls", row.names = FALSE, fileEncoding = "UTF-16LE")   
-
 # read my csv data file back into R
-nzal <- read.csv("nzal.csv") 
+#nzal <- read.csv("nzal.csv") 
 dput(nzal) 
 structure(list(Year = 2010:2021, Allocation = c(210421L, 437681L, 
 301244L, 1524172L, 755987L, 772706L, 786306L, 1038914L, 1324556L, 
@@ -299,7 +296,6 @@ sum(nzal[["Allocation"]])
 sum(nzal[["Value"]])
 [1] 233054863
 # 233.055 million dollars
-#[1] 220533810 or 220,533,810 - 220.533810 million $NZD
 
 # look at the unit allocations for each year
 select(nzal,c(Year, Allocation)) 

@@ -8,9 +8,11 @@ Free missions units are allocated (gifted for no cost) to [participant emitting 
     
 The New Zealand [Environmental Protection Authority](https://www.epa.govt.nz) (EPA) publishes the final industrial allocation of emission units annually on it's website [Industrial allocations decisions](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/decisions/)
 
-The EPA website states at; [EPA Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) **"If you Apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment".**
+The EPA website states at; [EPA Provisional Allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) 
+*"If you Apply for a Provisional Allocation you receive your entitlement in advance, based on your production for the previous calendar year. To ‘square up’ your entitlement with what you actually produced, in the next application period you’re required to submit an allocation adjustment".*
 
-The EPA website states at; [EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) **"You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs".**
+The EPA website states at; [EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) 
+*"You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs".*
 
 The EPA website also discloses a complete record of all industry final allocations in a MS Excel workbook [Industrial-Allocations-Final-Decisions.xlsx](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
 
@@ -18,7 +20,7 @@ How many emission units have been allocated to New Zealand Aluminium Smelters Li
 
 Follow the steps in the R script file Sum-allocation-2010-2018.r
 
-This table sets out the emission units allocated each year, the May market price and an estimated market value at the May price (based on the assumption that almost all of the units are transferred at the time of the provisional allocation of the current year which is also the 'wash-up' of the prior years final allocation).
+This table sets out the final allocation of emission units allocated each year, the May market price and an estimated market value at the May price (based on the assumption that almost all of the units are transferred at the time of the provisional allocation of the current year which is also the 'wash-up' of the prior years final allocation).
 
 |   Year |Final units allocated | May unit value | Total value |
 |----	 |----       |---- 	 |----     |	
@@ -37,7 +39,11 @@ This table sets out the emission units allocated each year, the May market price
 |  2022  |    605,320  | 76.6  |46,337,246|
 |TOTAL	 | 11,641,573  |N/A    |233 054,863|
 
-Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2020 to the annual allocation data. 
+### Provisional allocations
+Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. I assume that the provisional allocation for the current year (and the wash-up calculation of the final allocation for the previous year) are transferred to the emitter in May.
+
+### Average May emission unit price
+There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2020 to the annual allocation data. 
 
 How do I estimate the 2021 provisional allocation that was probably processed by EPA in May 2021? It is based on prior year 2020 actual production see [Section 81(1) of the Climate Change Response Act 2002](https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html). So obtain the 2020 final allocation of units and divide by 2020 final allocation baseline from [Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010](https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html). The final 2020 allocation of units multiplied by the 2021 allocation baseline equals the 2021 provisional allocation. 
 
