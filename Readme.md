@@ -1,4 +1,4 @@
-## Industrial allocation of New Zealand Emission Units to industry under the New Zealand Emissions Trading Scheme. 
+## How many emission units have been allocated to New Zealand Aluminium Smelters Limited under the New Zealand Emissions Trading Scheme? 
 
 ### Description
 
@@ -12,76 +12,27 @@ The EPA website states at; [EPA Provisional Allocation](https://www.epa.govt.nz/
 
 The EPA website states at; [EPA application deadlines](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/how-to-apply/) "You must submit your application via the Register by the following statutory deadlines: Provisional allocation applications: Apply between 1 January - 30 April of the year for which you wish to receive NZUs. Final allocation applications and annual allocation adjustments: Apply between 1 January - 30 April of the year following the year for which you wish to receive NZUs".
 
-The EPA website also discloses a complete record of all industry final allocations to 2021 in a MS Excel workbook [Industrial-Allocations-Final-Decisions.xlsx](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
+The EPA website also discloses a complete record of all industry final allocations in a MS Excel workbook [Industrial-Allocations-Final-Decisions.xlsx](https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx)
 
-This data repository is a reproducible exploration of the free industrial allocation of New Zealand emission units to New Zealand Aluminium Smelters Limited.
-
-### Data Preparation
-
-#### Requirements
-
-Data preparation was performed with [R version 3.6.0](https://cran.r-project.org/) with the [RKWard 0.6.5 IDE](https://rkward.kde.org/) running on an i586-pc-linux-gnu (64-bit), [Debian GNU/Linux 9 (Stretch) MX-18](https://mxlinux.org/index.php) operating system.
-
-#### Processing
+How many emission units have been allocated to New Zealand Aluminium Smelters Limited under the New Zealand Emissions Trading Scheme? What was their market value when they were allocated? What is the total value of the units given since 2010?
 
 Follow the steps in the R script file Sum-allocation-2010-2018.r
 
-Load packages 
-```{r}
-library(readxl)
-library(dplyr)
-library(RColorBrewer)
-library(tidyr)
-```
-check the working directory and set if necessary
-```{r}
-setwd("/folder")
-getwd()
-```
-Obtain the Excel workbook of the emission unit allocation to industry data from the EPA
-```{r}
-download.file("https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions.xlsx", "Industrial-Allocations-Final-Decisions.xlsx") 
-```
-check how many worksheets
-```{r}
-excel_sheets("Industrial-Allocations-Final-Decisions.xlsx")
-```
-```{r}
-[1] "IA Final Decisions"
-```
-read in the sheet of unit allocations
-```{r}
-Allocations <- read_excel("Industrial-Allocations-Final-Decisions.xlsx", sheet = "IA Final Decisions",skip=3)
-```
-Check the consistency of column/variable names
-```{r}
-str(Allocations)
-```
-```{r}
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	1129 obs. of  4 variables:
- $ Activity        : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant’s name: chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year            : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Final Allocation: num  210421 47144 3653 4712 948 ...   
-```
-Revise and shorten the column names
-```{r}
-colnames(Allocations) <- c("Activity", "Applicant", "Year", "Allocation")
-```
-Separate the allocation data into years
-```{r}
-nzu2010 <- filter(Allocations, Year =="2010")
-nzu2011 <- filter(Allocations, Year =="2011")
-nzu2012 <- filter(Allocations, Year =="2012")
-nzu2013 <- filter(Allocations, Year =="2013")
-nzu2014 <- filter(Allocations, Year =="2014")
-nzu2015 <- filter(Allocations, Year =="2015")
-nzu2016 <- filter(Allocations, Year =="2016")
-nzu2017 <- filter(Allocations, Year =="2017")
-nzu2018 <- filter(Allocations, Year =="2018")
-nzu2019 <- filter(Allocations, Year =="2019") 
-nzu2020 <- filter(Allocations, Year =="2020")  
-```
+|   Year |Units allocated | Unit value | Total value
+|  2010  |   210421  | 17.6  | 3699201|
+|   2011 |   437681  | 19.8  | 8683591|
+|   2012 |   301244  |  6.23 | 1876750|
+|   2013 |  1524172  |  1.94 | 2956894|
+|   2014 |   755987  |  4.08 | 3084427|
+|   2015 |   772706  |  5.34 | 4126250|
+|   2016 |   786306  | 14.6  |11503657|
+|   2017 |  1038914  | 17.0  |17619981|
+|   2018 |  1324556  | 21.3  |28186552|
+|  2019  |  1697437  | 25.3  |42928182|
+|  2020  |  1558268  | 24.8  |38707377|
+|  2021  |   628561  | 37.1  |23344756|
+|  2022  |   605320  | 76.6  |46337246|
+
 Each year, from 1 May, the EPA makes a [provisional allocation](https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/) of emission units to selected industries. I want to estimate the market value of each years free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of the emission units is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. This data set has it's own citation and DOI: Theecanmole. (2016). [New Zealand emission unit (NZU) monthly prices 2010 to 2016](https://github.com/theecanmole/nzu) [V1.0.01 [Data set]. Zenodo](http://doi.org/10.5281/zenodo.221328). I add a market price for the units at the May average price from 2010 to 2020 to the annual allocation data. 
 ```{r}
 nzu2010[["Value"]] <- nzu2010[["Allocation"]]*17.58
