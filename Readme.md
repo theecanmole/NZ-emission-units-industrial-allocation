@@ -19,6 +19,7 @@ How many emission units have been allocated to New Zealand Aluminium Smelters Li
 Follow the steps in the R script file Sum-allocation-2010-2018.r
 
 |   Year |Units allocated | Unit value | Total value |
+|----	 |----       |---- 	 |----     |	
 |  2010  |   210421  | 17.6  | 3699201|
 |   2011 |   437681  | 19.8  | 8683591|
 |   2012 |   301244  |  6.23 | 1876750|
