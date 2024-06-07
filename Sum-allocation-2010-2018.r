@@ -21,7 +21,7 @@ https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Images
 # load packages 
 library(readxl)
 library(dplyr)
-library(RColorBrewer)
+#library(RColorBrewer)
 #library(tidyr)
 
 # check the working directory and set if necessary
@@ -33,9 +33,7 @@ getwd()
 
 download.file("https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions_2022.xlsx", "Industrial-Allocations-Final-Decisions.xlsx") 
 # downloaded 212 bytes
-url= c("
-https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions_2022.xlsx
-https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions_2022.xlsx")
+url= c("https://www.epa.govt.nz/assets/Uploads/Documents/Emissions-Trading-Scheme/Reports/Industrial-Allocations/Industrial-Allocations-Final-Decisions_2022.xlsx")
 filename = c("Industrial-Allocations-Final-Decisions.xlsx") 
 str(url)
 chr "https://www.epa.govt.nz/assets...."
@@ -66,7 +64,7 @@ tibble [1,377 × 4] (S3: tbl_df/tbl/data.frame)
  $ Final Allocation: num [1:1377] 210421 47144 3653 4712 948 ...
 
 # revise and shorten column names
-colnames(Allocations) <- c("Activity", "Applicant", "Year", "Allocation")
+colnames(Allocations) <- c("Activity", "Applicant", "Year", "Units")
 
 # what is most recent year? 
 max(Allocations[["Year"]])
@@ -101,47 +99,57 @@ nzu2022 <- filter(Allocations, Year =="2022")
 
 # check just the 2010 data
 str(nzu2010)
-Classes ‘tbl_df’, ‘tbl’ and 'data.frame':	141 obs. of  4 variables:
- $ Activity  : chr  "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr  "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num  2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num  210421 47144 3653 4712 948 ...   
- 
-# Each year, from May, the EPA makes a 'provisional' allocation of emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu
-# The NZU repository has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328
-# I will add a NZU market price value at the May average price from 2010
 
-nzu2010[["Value"]] <- nzu2010[["Allocation"]]*17.58
-nzu2011[["Value"]] <- nzu2011[["Allocation"]]*19.84
-nzu2012[["Value"]] <- nzu2012[["Allocation"]]*6.23
-nzu2013[["Value"]] <- nzu2013[["Allocation"]]*1.94
-nzu2014[["Value"]] <- nzu2014[["Allocation"]]*4.08
-nzu2015[["Value"]] <- nzu2015[["Allocation"]]*5.34
-nzu2016[["Value"]] <- nzu2016[["Allocation"]]*14.63
-nzu2017[["Value"]] <- nzu2017[["Allocation"]]*16.96
-nzu2018[["Value"]] <- nzu2018[["Allocation"]]*21.28
-nzu2019[["Value"]] <- nzu2019[["Allocation"]]*25.29 
-nzu2020[["Value"]] <- nzu2020[["Allocation"]]*24.84
-nzu2021[["Value"]] <- nzu2021[["Allocation"]]*37.14
-nzu2022[["Value"]] <- nzu2022[["Allocation"]]*76.55
+tibble [141 × 4] (S3: tbl_df/tbl/data.frame)
+ $ Activity : chr [1:141] "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
+ $ Applicant: chr [1:141] "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
+ $ Year     : num [1:141] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
+ $ Units    : num [1:141] 210421 47144 3653 4712 948 ...
+
+ 
+# Each year, from May, the EPA makes a 'provisional' allocation of emssion units to selected industries. see https://www.epa.govt.nz/industry-areas/emissions-trading-scheme/industrial-allocations/ I want to estimate the market value of free allocation of units. I understand that the deadline for a provisional allocation is 30 April of each year so I assume the transfer of allocation is made in May of each year. 
+# There is an online 'open data' Github repository of New Zealand Unit (NZU) prices going back to May 2010. https://github.com/theecanmole/nzu, the NZU repository has it's own citation and DOI: Theecanmole. (2016). New Zealand emission unit (NZU) monthly prices 2010 to 2016: V1.0.01 [Data set]. Zenodo. http://doi.org/10.5281/zenodo.221328
+# Add a NZU market price value at the May average price for each year
+
+nzu2010[["Mayunitprice"]] <- 17.58
+nzu2011[["Mayunitprice"]] <- 19.84
+nzu2012[["Mayunitprice"]] <- 6.23
+nzu2013[["Mayunitprice"]] <- 1.94
+nzu2014[["Mayunitprice"]] <- 4.08
+nzu2015[["Mayunitprice"]] <- 5.34
+nzu2016[["Mayunitprice"]] <- 14.63
+nzu2017[["Mayunitprice"]] <- 16.96
+nzu2018[["Mayunitprice"]] <- 21.28
+nzu2019[["Mayunitprice"]] <- 25.29 
+nzu2020[["Mayunitprice"]] <- 24.84
+nzu2021[["Mayunitprice"]] <- 37.14
+nzu2022[["Mayunitprice"]] <- 76.55
+
+#nzu2010[["Mayunitprice"]] <- nzu2010[["Allocation"]]*17.58
+#nzu2011[["Mayunitprice"]] <- nzu2011[["Allocation"]]*19.84
+#nzu2012[["Mayunitprice"]] <- nzu2012[["Allocation"]]*6.23
+#nzu2013[["Mayunitprice"]] <- nzu2013[["Allocation"]]*1.94
+#nzu2014[["Mayunitprice"]] <- nzu2014[["Allocation"]]*4.08
+#nzu2015[["Mayunitprice"]] <- nzu2015[["Allocation"]]*5.34
+#nzu2016[["Mayunitprice"]] <- nzu2016[["Allocation"]]*14.63
+#nzu2017[["Mayunitprice"]] <- nzu2017[["Allocation"]]*16.96
+#nzu2018[["Mayunitprice"]] <- nzu2018[["Allocation"]]*21.28
+#nzu2019[["Mayunitprice"]] <- nzu2019[["Allocation"]]*25.29 
+#nzu2020[["Mayunitprice"]] <- nzu2020[["Allocation"]]*24.84
+#nzu2021[["Mayunitprice"]] <- nzu2021[["Allocation"]]*37.14
+#nzu2022[["Mayunitprice"]] <- nzu2022[["Allocation"]]*76.55
 
 # combine all year data together into 1 dataframe - I use rbind as all the column names are consistent
 Allocations <- rbind(nzu2010,nzu2011,nzu2012,nzu2013,nzu2014,nzu2015,nzu2016,nzu2017,nzu2018,nzu2019,nzu2020,nzu2021,nzu2022)
 
 # check the new dataframe
 str(Allocations)
-tibble [1,377 × 5] (S3: tbl_df/tbl/data.frame)
- $ Activity  : chr [1:1377] "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr [1:1377] "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num [1:1377] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num [1:1377] 210421 47144 3653 4712 948 ...
- $ Value     : num [1:1377] 3699201 828792 64220 82837 16666 ... 
 
-# put the market unit prices into the dataframe
-Allocations$unitvalue = Allocations[["Value"]]/Allocations[["Allocation"]]
-summary(Allocations$unitvalue) 
-   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-   1.94    5.34   17.58   19.00   21.28   76.55 
+# put the market value of each allocation based on May unit prices into the dataframe
+Allocations$Unitvalue = Allocations[["Units"]]*Allocations[["Mayunitprice"]]
+
+summary(Allocations$Unitvalue) 
+
    
 # Create a .csv formatted data file
 write.csv(Allocations, file = "Allocations.csv", row.names = FALSE)
@@ -156,29 +164,31 @@ write.csv(Allocations, file = "Allocations.xls", row.names = FALSE, fileEncoding
 Allocations <- read.csv("Allocations.csv") 
 
 str(Allocations)
-tibble [1,377 × 5] (S3: tbl_df/tbl/data.frame)
- $ Activity  : chr [1:1377] "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
- $ Applicant : chr [1:1377] "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
- $ Year      : num [1:1377] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
- $ Allocation: num [1:1377] 210421 47144 3653 4712 948 ...
- $ Value     : num [1:1377] 3699201 828792 64220 82837 16666 ...
+tibble [1,377 × 6] (S3: tbl_df/tbl/data.frame)
+ $ Activity    : chr [1:1377] "Aluminium smelting" "Burnt lime" "Burnt lime" "Burnt lime" ...
+ $ Applicant   : chr [1:1377] "New Zealand Aluminium Smelters Limited" "Graymont (NZ) Limited" "Holcim (New Zealand) Limited" "Perry Resources (2008) Ltd" ...
+ $ Year        : num [1:1377] 2010 2010 2010 2010 2010 2010 2010 2010 2010 2010 ...
+ $ Units       : num [1:1377] 210421 47144 3653 4712 948 ...
+ $ Mayunitprice: num [1:1377] 17.6 17.6 17.6 17.6 17.6 ...
+ $ Unitvalue   : num [1:1377] 3699201 828792 64220 82837 16666 ...
+
  
  # look at summary of allocations dataframe
 summary(Allocations)
-   Activity          Applicant              Year        Allocation     
+   Activity          Applicant              Year          Units        
  Length:1377        Length:1377        Min.   :2010   Min.   :      1  
  Class :character   Class :character   1st Qu.:2012   1st Qu.:    195  
  Mode  :character   Mode  :character   Median :2015   Median :   1182  
                                        Mean   :2015   Mean   :  49195  
                                        3rd Qu.:2018   3rd Qu.:   8079  
                                        Max.   :2022   Max.   :2145482  
-     Value             unitvalue    
- Min.   :        4   Min.   : 1.94  
- 1st Qu.:     2083   1st Qu.: 5.34  
- Median :    15673   Median :17.58  
- Mean   :  1154879   Mean   :19.00  
- 3rd Qu.:   139015   3rd Qu.:21.28  
- Max.   :146249005   Max.   :76.55
+  Mayunitprice     Unitvalue        
+ Min.   : 1.94   Min.   :        4  
+ 1st Qu.: 5.34   1st Qu.:     2083  
+ Median :17.58   Median :    15673  
+ Mean   :19.00   Mean   :  1154879  
+ 3rd Qu.:21.28   3rd Qu.:   139015  
+ Max.   :76.55   Max.   :146249005 
  
 # How many emission units were given to  New Zealand Aluminium Smelters Limited? Filter the data for their allocation. Create a dataframe.
 nzal <- filter(Allocations, Applicant =="New Zealand Aluminium Smelters Limited") 
@@ -186,27 +196,46 @@ nzal <- filter(Allocations, Applicant =="New Zealand Aluminium Smelters Limited"
 # what does that dataframe that look like?
 str(nzal) 
 tibble [13 × 6] (S3: tbl_df/tbl/data.frame)
- $ Activity  : chr [1:13] "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" ...
- $ Applicant : chr [1:13] "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" ...
- $ Year      : num [1:13] 2010 2011 2012 2013 2014 ...
- $ Allocation: num [1:13] 210421 437681 301244 1524172 755987 ...
- $ Value     : num [1:13] 3699201 8683591 1876750 2956894 3084427 ...
- $ unitvalue : num [1:13] 17.58 19.84 6.23 1.94 4.08 ...
+ $ Activity    : chr [1:13] "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" "Aluminium smelting" ...
+ $ Applicant   : chr [1:13] "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" "New Zealand Aluminium Smelters Limited" ...
+ $ Year        : num [1:13] 2010 2011 2012 2013 2014 ...
+ $ Units       : num [1:13] 210421 437681 301244 1524172 755987 ...
+ $ Mayunitprice: num [1:13] 17.58 19.84 6.23 1.94 4.08 ...
+ $ Unitvalue   : num [1:13] 3699201 8683591 1876750 2956894 3084427 ...
 
-# filter out redundant columns to leave year allocation and value
+
+# filter out redundant columns to leave year allocation May price and value
 nzal <- select(nzal, -Activity, -Applicant)
 
 # what is the most recent year of allocation? It is 2022. 
 tail(nzal)
 # A tibble: 6 × 4
-   Year Allocation     Value unitvalue
-  <dbl>      <dbl>     <dbl>     <dbl>
-1  2017    1038914 17619981.      17.0
-2  2018    1324556 28186552.      21.3
-3  2019    1697437 42928182.      25.3
-4  2020    1558268 38707377.      24.8
-5  2021     628561 23344756.      37.1
-6  2022     605320 46337246       76.6
+   Year   Units Mayunitprice Unitvalue
+  <dbl>   <dbl>        <dbl>     <dbl>
+1  2017 1038914         17.0 17619981.
+2  2018 1324556         21.3 28186552.
+3  2019 1697437         25.3 42928182.
+4  2020 1558268         24.8 38707377.
+5  2021  628561         37.1 23344756.
+6  2022  605320         76.6 46337246 
+
+nzal
+# A tibble: 13 × 4
+    Year   Units Mayunitprice Unitvalue
+   <dbl>   <dbl>        <dbl>     <dbl>
+ 1  2010  210421        17.6   3699201.
+ 2  2011  437681        19.8   8683591.
+ 3  2012  301244         6.23  1876750.
+ 4  2013 1524172         1.94  2956894.
+ 5  2014  755987         4.08  3084427.
+ 6  2015  772706         5.34  4126250.
+ 7  2016  786306        14.6  11503657.
+ 8  2017 1038914        17.0  17619981.
+ 9  2018 1324556        21.3  28186552.
+10  2019 1697437        25.3  42928182.
+11  2020 1558268        24.8  38707377.
+12  2021  628561        37.1  23344756.
+13  2022  605320        76.6  46337246 
 
 # How to estimate the 2021 provisional allocation that was probably processed by EPA in May 2021. That is based on prior year 2020 actual production see https://www.legislation.govt.nz/act/public/2002/0040/latest/DLM1662643.html Section 81(1) of the Climate Change Response Act 2002. Obtain 2020 final allocation of units and divide by final Allocation Baseline (see Regulation 7 of the Climate Change (Eligible Industrial Activities) Regulations 2010 https://www.legislation.govt.nz/regulation/public/2010/0189/latest/DLM3075118.html) = 2020 actual production
 1558268 / 5.194 
@@ -226,57 +255,16 @@ tail(nzal)
 # check the dataframe
 str(nzal) 
 tibble [13 × 4] (S3: tbl_df/tbl/data.frame)
- $ Year      : num [1:13] 2010 2011 2012 2013 2014 ...
- $ Allocation: num [1:13] 210421 437681 301244 1524172 755987 ...
- $ Value     : num [1:13] 3699201 8683591 1876750 2956894 3084427 ...
- $ unitvalue : num [1:13] 17.58 19.84 6.23 1.94 4.08 ... 
-# reorder the columns to Year -> Allocation x unitvalue = Value 
-nzal <- nzal[,c(1,2,4,3)] 
-str(nzal) 
-tibble [13 × 4] (S3: tbl_df/tbl/data.frame)
- $ Year      : num [1:13] 2010 2011 2012 2013 2014 ...
- $ Allocation: num [1:13] 210421 437681 301244 1524172 755987 ...
- $ unitvalue : num [1:13] 17.58 19.84 6.23 1.94 4.08 ...
- $ Value     : num [1:13] 3699201 8683591 1876750 2956894 3084427 ... 
+ $ Year        : num [1:13] 2010 2011 2012 2013 2014 ...
+ $ Units       : num [1:13] 210421 437681 301244 1524172 755987 ...
+ $ Mayunitprice: num [1:13] 17.58 19.84 6.23 1.94 4.08 ...
+ $ Unitvalue   : num [1:13] 3699201 8683591 1876750 2956894 3084427 ...
  
-nzal
-# A tibble: 13 × 4
-    Year Allocation unitvalue     Value
-   <dbl>      <dbl>     <dbl>     <dbl>
- 1  2010     210421     17.6   3699201.
- 2  2011     437681     19.8   8683591.
- 3  2012     301244      6.23  1876750.
- 4  2013    1524172      1.94  2956894.
- 5  2014     755987      4.08  3084427.
- 6  2015     772706      5.34  4126250.
- 7  2016     786306     14.6  11503657.
- 8  2017    1038914     17.0  17619981.
- 9  2018    1324556     21.3  28186552.
-10  2019    1697437     25.3  42928182.
-11  2020    1558268     24.8  38707377.
-12  2021     628561     37.1  23344756.
-13  2022     605320     76.6  46337246 
-
 # Create .csv formatted data file
 write.csv(nzal, file = "nzal.csv", row.names = FALSE)
 
 # read my csv data file back into R
 #nzal <- read.csv("nzal.csv") 
-dput(nzal) 
-structure(list(Year = 2010:2021, Allocation = c(210421L, 437681L, 
-301244L, 1524172L, 755987L, 772706L, 786306L, 1038914L, 1324556L, 
-1697437L, 1558268L, 1539067L), Value = c(3699201.18, 8683591.04, 
-1876750.12, 2956893.68, 3084426.96, 4126250.04, 11503656.78, 
-17619981.44, 28186551.68, 42928181.73, 38707377.12, 57160948)), class = "data.frame", row.names = c(NA, 
--12L))
-# or
-nzallist <- structure(list(Year = 2010:2021, Allocation = c(210421L, 437681L, 
-301244L, 1524172L, 755987L, 772706L, 786306L, 1038914L, 1324556L, 
-1697437L, 1558268L, 1539067L), Value = c(3699201.18, 8683591.04, 
-1876750.12, 2956893.68, 3084426.96, 4126250.04, 11503656.78, 
-17619981.44, 28186551.68, 42928181.73, 38707377.12, 57160948)), class = "data.frame", row.names = c(NA, 
--12L))
-
 str(nzallist) 
 'data.frame':	12 obs. of  3 variables:
  $ Year      : int  2010 2011 2012 2013 2014 2015 2016 2017 2018 2019 ...
@@ -286,19 +274,19 @@ dump("nzal", file = "nzaldumpdata.R", append = FALSE,control = "all", envir = pa
 save.image() 
 
 # How many NZUs were given to  New Zealand Aluminium Smelters Limited in total?
-sum(nzal[["Allocation"]]) 
+sum(nzal[["Units"]]) 
 [1] 11641573
 
 # [1] 11946759
 # 11,946,759 or 11.946759 million emission units  or call it 12 million
 
 # What was the market value of the emission units (based on mid May market prices) that were given to  New Zealand Aluminium Smelters Limited each year?
-sum(nzal[["Value"]])
+sum(nzal[["Unitvalue"]])
 [1] 233054863
 # 233.055 million dollars
 
 # look at the unit allocations for each year
-select(nzal,c(Year, Allocation)) 
+select(nzal,c(Year, Units)) 
 # A tibble: 13 × 2
     Year Allocation
    <dbl>      <dbl>
@@ -315,9 +303,11 @@ select(nzal,c(Year, Allocation))
 11  2020    1558268
 12  2021     628561
 13  2022     605320
+# create plot
+plot(select(nzal,c(Year, Units)),type="s",lwd=3,col=4) 
 
 # edit the unit allocations into a matrix, create a numeric vector of NZAL allocations
-a <-nzal$Allocation
+a <-nzal$Units
 str(a) 
 num [1:13] 210421 437681 301244 1524172 755987 .. 
 # create labelled matrix
